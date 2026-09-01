@@ -6,6 +6,9 @@ import { useEffect, useRef } from "react";
  * Autoplays where allowed; otherwise starts on the user's first natural
  * interaction (e.g. tapping the envelope) — no "play music" button needed.
  */
+// Target track: "Venus and Flower" — Austin Farwell.
+// Replace this URL with the uploaded mp3 asset once available
+// (YouTube links cannot be streamed directly in a browser).
 const MUSIC_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
 export function BackgroundMusic() {

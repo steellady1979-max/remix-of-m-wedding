@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "0d1c2bf8-4708-49f1-9855-af2018637dd1",
-  "project_id": "1338131d-d5de-4f95-8690-a6cd2336a9dc",
-  "url": "/__l5e/assets-v1/0d1c2bf8-4708-49f1-9855-af2018637dd1/venue.jpg",
-  "r2_key": "a/v1/1338131d-d5de-4f95-8690-a6cd2336a9dc/0d1c2bf8-4708-49f1-9855-af2018637dd1/venue.jpg",
-  "original_filename": "venue.jpg",
-  "size": 849437,
   "content_type": "image/jpeg",
-  "created_at": "2026-09-01T11:10:40Z"
+  "created_at": "2026-09-01T11:10:40Z",
+  "original_filename": "venue.jpg",
+  "project_id": "948add9b-0161-4aee-b0fb-e7905232aeb2",
+  "r2_key": "a/v1/948add9b-0161-4aee-b0fb-e7905232aeb2/0d1c2bf8-4708-49f1-9855-af2018637dd1/venue.jpg",
+  "size": 849437,
+  "url": "/__l5e/assets-v1/0d1c2bf8-4708-49f1-9855-af2018637dd1/venue.jpg",
+  "version": 1
 }

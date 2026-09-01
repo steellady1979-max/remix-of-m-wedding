@@ -10,6 +10,7 @@ import couple from "@/assets/couple.jpg.asset.json";
 import church from "@/assets/church.jpg.asset.json";
 import ceremony from "@/assets/ceremony.jpg.asset.json";
 import dinner from "@/assets/dinner.jpg.asset.json";
+import invitation from "@/assets/wedding-invitation.png.asset.json";
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =

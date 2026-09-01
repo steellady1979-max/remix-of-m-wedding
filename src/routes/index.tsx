@@ -10,6 +10,7 @@ import couple from "@/assets/couple.jpg.asset.json";
 import church from "@/assets/church.jpg.asset.json";
 import ceremony from "@/assets/ceremony.jpg.asset.json";
 import dinner from "@/assets/dinner.jpg.asset.json";
+import invitation from "@/assets/wedding-invitation.png.asset.json";
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =
@@ -100,6 +101,18 @@ function Index() {
           </Reveal>
           <Reveal delay={120} className="w-full max-w-md">
             <Countdown target="2026-10-17T12:00:00+04:00" />
+          </Reveal>
+        </section>
+
+        {/* Invitation card */}
+        <section className="flex flex-col items-center bg-white px-6 py-20">
+          <Reveal className="w-full max-w-md">
+            <img
+              src={invitation.url}
+              alt="საქორწილო მოსაწვევი კონვერტთან და თეთრ ლილიასთან ერთად"
+              loading="lazy"
+              className="w-full object-contain"
+            />
           </Reveal>
         </section>
 

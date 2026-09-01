@@ -310,10 +310,10 @@
 @keyframes bow-sway {
   0%,
   100% {
-    transform: translate(-50%, -50%) rotate(-0.8deg) scale(1);
+    transform: rotate(-0.8deg) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) rotate(0.8deg) scale(1.02);
+    transform: rotate(0.8deg) scale(1.02);
   }
 }
 

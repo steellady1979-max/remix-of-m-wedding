@@ -70,7 +70,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
 
         {/* Top flap with the blank olive wax seal at its tip */}
         <div
-          className="absolute inset-x-0 top-0 z-20 h-[52%]"
+          className="absolute inset-x-0 top-0 z-30 h-[52%]"
           style={{ transformStyle: "preserve-3d" }}
         >
           <div

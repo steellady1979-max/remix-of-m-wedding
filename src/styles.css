@@ -174,32 +174,32 @@
   }
 
 
-  /* Scene 1 — Act 1: slow continuous pull-back of the whole envelope */
+  /* Scene 1 — Act 1: the envelope pulls back on its own faster track */
   .intro-zoom {
     transform-origin: 50% 48%;
-    animation: intro-zoom 6600ms cubic-bezier(0.33, 0, 0.2, 1) forwards;
+    animation: intro-zoom 4200ms cubic-bezier(0.33, 0, 0.2, 1) forwards;
   }
 
-  /* Venue keeps drifting back a touch longer than the envelope */
+  /* Parallax: the scenery drifts back slower and longer than the envelope */
   .intro-venue {
     transform-origin: 50% 50%;
-    animation: intro-venue 7200ms cubic-bezier(0.33, 0, 0.25, 1) forwards;
+    animation: intro-venue 5600ms cubic-bezier(0.3, 0, 0.24, 1) forwards;
   }
 
   /* Act 2: the wax seal breathes, then releases */
   .intro-seal {
-    animation: intro-seal-out 700ms cubic-bezier(0.4, 0, 0.2, 1) 2100ms forwards;
+    animation: intro-seal-out 550ms cubic-bezier(0.4, 0, 0.2, 1) 1500ms forwards;
   }
   .intro-seal > img {
-    animation: seal-breathe 2.8s ease-in-out infinite;
+    animation: seal-breathe 2.4s ease-in-out infinite;
   }
 
   /* Act 3: the top flap folds open, then the envelope body drops away */
   .intro-flap-top {
-    animation: intro-flap-top 1700ms cubic-bezier(0.5, 0, 0.22, 1) 2500ms forwards;
+    animation: intro-flap-top 1250ms cubic-bezier(0.5, 0, 0.22, 1) 1850ms forwards;
   }
   .intro-env-body {
-    animation: intro-env-body 1900ms cubic-bezier(0.5, 0, 0.28, 1) 3900ms forwards;
+    animation: intro-env-body 1500ms cubic-bezier(0.5, 0, 0.28, 1) 2850ms forwards;
   }
 }
 

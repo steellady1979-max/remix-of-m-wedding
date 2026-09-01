@@ -3,15 +3,20 @@ import { useState } from "react";
 
 import { Countdown } from "@/components/Countdown";
 import { InvitationDoors } from "@/components/InvitationDoors";
+import { Reveal } from "@/components/Reveal";
 import { Rsvp } from "@/components/Rsvp";
 import { WishEnvelope } from "@/components/WishEnvelope";
 import couple from "@/assets/couple.jpg.asset.json";
 import church from "@/assets/church.jpg.asset.json";
 import ceremony from "@/assets/ceremony.jpg.asset.json";
+import dinner from "@/assets/dinner.jpg.asset.json";
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =
   "მარიამი და ალექსანდრე გვთხოვთ გაგვიზიაროთ ჩვენი ქორწილის დღე — 17 ოქტომბერი 2026, ჯვრისწერა 12:00.";
+
+const SHUAGULI_MAP =
+  "https://www.google.com/maps/place/Shuaguli+-+Event+Venue/@41.9179964,44.6600594,17z/data=!3m1!4b1!4m6!3m5!1s0x4044618efa8ffee9:0xcf2a926a77e5e201!8m2!3d41.9179964!4d44.6626343!16s%2Fg%2F11hdynb1k3?hl=is&entry=ttu";
 
 const SCHEDULE = [
   {
@@ -25,10 +30,18 @@ const SCHEDULE = [
     time: "17:00",
     title: "ხელის მოწერის ცერემონია შუაგულში",
     image: ceremony.url,
+    href: SHUAGULI_MAP,
     alt: "ცერემონიის სივრცე თეთრი სკამებითა და ყვავილებით",
   },
-  { time: "19:00", title: "ვახშამი" },
+  {
+    time: "19:00",
+    title: "ვახშამი",
+    image: dinner.url,
+    href: SHUAGULI_MAP,
+    alt: "სადღესასწაულო სუფრა სანთლებითა და კალებით ფანჯარასთან",
+  },
 ];
+
 
 export const Route = createFileRoute("/")({
   head: () => ({

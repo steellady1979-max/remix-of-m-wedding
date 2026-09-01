@@ -63,6 +63,14 @@ function AdminPage() {
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [code, setCode] = useState("");
+  const [codeOk, setCodeOk] = useState(false);
+  const [codeError, setCodeError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("admin-code") === "ok") setCodeOk(true);
+  }, []);
+
 
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [wishes, setWishes] = useState<Wish[]>([]);

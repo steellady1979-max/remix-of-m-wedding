@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import doorPanel from "@/assets/door-panel.jpg";
 import bow from "@/assets/chiffon-bow.png";
-import venue from "@/assets/venue.jpg.asset.json";
+import venue from "@/assets/couple.jpg.asset.json";
 
 /** Timings, matched to the CSS transitions below. */
 const BOW_RELEASE = 520;

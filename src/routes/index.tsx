@@ -104,6 +104,18 @@ function Index() {
           </Reveal>
         </section>
 
+        {/* Invitation card */}
+        <section className="flex flex-col items-center bg-white px-6 py-20">
+          <Reveal className="w-full max-w-md">
+            <img
+              src={invitation.url}
+              alt="საქორწილო მოსაწვევი კონვერტთან და თეთრ ლილიასთან ერთად"
+              loading="lazy"
+              className="w-full object-contain"
+            />
+          </Reveal>
+        </section>
+
         {/* Schedule */}
         <section className="flex flex-col items-center gap-10 bg-white px-6 py-24">
           <Reveal>

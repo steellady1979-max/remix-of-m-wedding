@@ -19,10 +19,6 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
     setPhase((p) => (p === "closed" ? "opening" : p));
   }, []);
 
-  const skip = useCallback(() => {
-    setPhase("gone");
-    onOpened?.();
-  }, [onOpened]);
 
   useEffect(() => {
     if (phase !== "opening") return;

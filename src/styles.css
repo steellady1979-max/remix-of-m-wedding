@@ -132,6 +132,14 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@font-face {
+  font-family: "Galaktioni";
+  src: url("./assets/galaktioni.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-ink: oklch(0.28 0.02 120);
   --color-olive: oklch(0.45 0.06 125);

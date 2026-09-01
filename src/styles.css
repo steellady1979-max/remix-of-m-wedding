@@ -132,14 +132,22 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@font-face {
+  font-family: "Galaktioni";
+  src: url("./assets/galaktioni.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-ink: oklch(0.28 0.02 120);
   --color-olive: oklch(0.45 0.06 125);
   --color-olive-soft: oklch(0.62 0.05 125);
   --color-olive-mist: oklch(0.95 0.015 125);
   --color-champagne: oklch(0.97 0.008 110);
-  --font-display: "Noto Serif Georgian", Georgia, serif;
-  --font-sans: "Noto Sans Georgian", system-ui, sans-serif;
+  --font-display: "Galaktioni", Georgia, serif;
+  --font-sans: "Galaktioni", system-ui, sans-serif;
   --ease-drape: cubic-bezier(0.65, 0, 0.2, 1);
 }
 

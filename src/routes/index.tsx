@@ -3,9 +3,11 @@ import { useState } from "react";
 
 import { Countdown } from "@/components/Countdown";
 import { InvitationDoors } from "@/components/InvitationDoors";
-import { ScratchDate } from "@/components/ScratchDate";
-import venue from "@/assets/venue.jpg.asset.json";
-
+import { Rsvp } from "@/components/Rsvp";
+import { WishEnvelope } from "@/components/WishEnvelope";
+import couple from "@/assets/couple.jpg.asset.json";
+import church from "@/assets/church.jpg.asset.json";
+import ceremony from "@/assets/ceremony.jpg.asset.json";
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =
@@ -16,8 +18,15 @@ const SCHEDULE = [
     time: "12:00",
     title: "ჯვრისწერა",
     href: "https://maps.app.goo.gl/BMZYm7LTAfFjGm7FA?g_st=ic",
+    image: church.url,
+    alt: "ჯვრისწერის ეკლესია — აკვარელის ნახატი",
   },
-  { time: "17:00", title: "ხელის მოწერის ცერემონია შუაგულში" },
+  {
+    time: "17:00",
+    title: "ხელის მოწერის ცერემონია შუაგულში",
+    image: ceremony.url,
+    alt: "ცერემონიის სივრცე თეთრი სკამებითა და ყვავილებით",
+  },
   { time: "19:00", title: "ვახშამი" },
 ];
 
@@ -47,19 +56,17 @@ function Index() {
           revealed ? "opacity-100" : "opacity-0"
         }`}
       >
-        {/* Hero — the couple's names over the watercolour venue */}
+        {/* Hero — the couple's names over the couple photo */}
         <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center">
           <img
-            src={venue.url}
-            alt="საქორწილო სივრცე — აკვარელის სტილში დახატული ხედი ტბასა და თეთრ შენობასთან"
+            src={couple.url}
+            alt="წყვილი საქორწილო სივრცის ხედის წინ"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/45 to-white/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/45 via-white/25 to-white/70" />
 
-          <div className="relative animate-fade-in">
-            <p className="text-[0.65rem] uppercase tracking-[0.45em] text-olive">
-              ჩვენი ქორწილი
-            </p>
+          <div className="relative animate-fade-in rounded-xl bg-white/70 px-8 py-10 backdrop-blur-[2px]">
+            <p className="text-[0.7rem] tracking-[0.45em] text-olive">ჩვენი ქორწილი</p>
             <h1 className="mt-6 flex flex-col items-center gap-2 font-display text-3xl font-light leading-tight text-olive sm:text-5xl">
               <span>მარიამი</span>
               <span className="text-xl text-olive-soft sm:text-3xl">&</span>
@@ -70,30 +77,10 @@ function Index() {
           </div>
         </section>
 
-        {/* Scratch to reveal the date */}
-        <section className="flex flex-col items-center gap-8 bg-white px-6 py-24 text-center">
-          <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.45em] text-olive">თამაში</p>
-            <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
-              გადაფხიკე და გაიგე თარიღი
-            </h2>
-          </div>
-
-          <ScratchDate>
-            <p className="text-[0.65rem] uppercase tracking-[0.4em] text-olive-soft">
-              ქორწილის თარიღი
-            </p>
-            <p className="mt-4 font-display text-3xl font-light text-olive sm:text-4xl">
-              17 ოქტომბერი
-            </p>
-            <p className="mt-1 font-display text-xl font-light text-ink/70">2026 წელი</p>
-          </ScratchDate>
-        </section>
-
         {/* Countdown */}
         <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center">
           <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.45em] text-olive">დარჩენილია</p>
+            <p className="text-[0.7rem] tracking-[0.45em] text-olive">დარჩენილია</p>
             <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
               ჩვენს დღემდე
             </h2>
@@ -105,42 +92,65 @@ function Index() {
 
         {/* Schedule */}
         <section className="flex flex-col items-center gap-10 bg-white px-6 py-24">
-          <div className="text-center">
-            <p className="text-[0.65rem] uppercase tracking-[0.45em] text-olive">დღის განრიგი</p>
-            <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
-              17 ოქტომბერი 2026
-            </h2>
-          </div>
+          <p className="text-[0.7rem] tracking-[0.45em] text-olive">დღის განრიგი</p>
 
-          <ul className="w-full max-w-md divide-y divide-olive/15 border-y border-olive/15">
+          <ul className="w-full max-w-md space-y-12">
             {SCHEDULE.map((item) => (
-              <li key={item.time} className="flex items-baseline gap-6 py-6">
-                <span className="font-display text-xl font-light tabular-nums text-olive">
+              <li key={item.time} className="flex flex-col items-center gap-5 text-center">
+                <span className="font-display text-2xl font-light tabular-nums text-olive">
                   {item.time}
                 </span>
-                <span className="flex-1 text-sm leading-relaxed text-ink/80">
-                  {item.title}
-                  {item.href && (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="story-link ml-2 whitespace-nowrap text-xs uppercase tracking-[0.2em] text-olive"
-                    >
-                      რუკაზე
-                    </a>
-                  )}
-                </span>
+                <span className="text-sm leading-relaxed text-ink/80">{item.title}</span>
+
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.alt ?? ""}
+                    loading="lazy"
+                    className="w-full rounded-lg border border-olive/15 object-cover"
+                  />
+                )}
+
+                {item.href && (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-md border border-olive/30 px-5 py-2 text-xs tracking-[0.25em] text-olive transition-colors hover:bg-olive hover:text-white"
+                  >
+                    რუკაზე გადასვლა
+                  </a>
+                )}
               </li>
             ))}
           </ul>
         </section>
 
+        {/* RSVP */}
+        <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center">
+          <div>
+            <p className="text-[0.7rem] tracking-[0.45em] text-olive">დასწრება</p>
+            <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
+              შეძლებთ მობრძანებას?
+            </h2>
+          </div>
+          <Rsvp />
+        </section>
+
+        {/* Wishes envelope */}
+        <section className="flex flex-col items-center gap-8 bg-white px-6 py-24 text-center">
+          <div>
+            <p className="text-[0.7rem] tracking-[0.45em] text-olive">სურვილები</p>
+            <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
+              სურვილების კონვერტი
+            </h2>
+          </div>
+          <WishEnvelope />
+        </section>
+
         <footer className="bg-olive px-6 py-12 text-center">
           <p className="font-display text-lg font-light text-white">მარიამი & ალექსანდრე</p>
-          <p className="mt-2 text-[0.65rem] uppercase tracking-[0.35em] text-white/70">
-            17 ოქტომბერი 2026
-          </p>
+          <p className="mt-2 text-[0.7rem] tracking-[0.35em] text-white/70">17 ოქტომბერი 2026</p>
         </footer>
       </div>
     </main>

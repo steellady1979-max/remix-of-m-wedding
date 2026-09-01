@@ -35,7 +35,7 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 select-none overflow-hidden bg-ink"
+      className="fixed inset-0 z-50 select-none overflow-hidden bg-white"
       role="button"
       tabIndex={0}
       aria-label="გახსენი მოსაწვევი"
@@ -91,8 +91,8 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
           <div
             className={`pointer-events-none absolute inset-y-0 w-16 ${
               side === "left"
-                ? "right-0 bg-gradient-to-l from-ink/35 to-transparent"
-                : "left-0 bg-gradient-to-r from-ink/35 to-transparent"
+                ? "right-0 bg-gradient-to-l from-olive/20 to-transparent"
+                : "left-0 bg-gradient-to-r from-olive/20 to-transparent"
             }`}
           />
         </div>
@@ -110,14 +110,14 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
             alt=""
             width={1024}
             height={1536}
-            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(40,35,20,0.35)]"
+            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)]"
           />
         </div>
       </div>
 
       {/* Prompt */}
       <p
-        className={`absolute inset-x-0 bottom-24 z-10 text-center text-[0.7rem] tracking-[0.45em] text-white/85 transition-opacity duration-500 ${
+        className={`absolute inset-x-0 bottom-24 z-10 text-center text-[0.7rem] tracking-[0.45em] text-olive transition-opacity duration-500 ${
           opening ? "opacity-0" : "animate-pulse opacity-100"
         }`}
       >

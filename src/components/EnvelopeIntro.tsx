@@ -183,7 +183,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
               alt=""
               width={816}
               height={816}
-              className={`absolute left-1/2 top-1/2 z-20 w-[24vw] max-w-[130px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_10px_20px_rgba(60,50,25,0.28)] transition-all duration-700 ease-out ${
+              className={`absolute left-1/2 top-1/2 z-20 w-[24vw] max-w-[150px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_10px_20px_rgba(60,50,25,0.28)] transition-all duration-700 ease-out ${
                 opened ? "scale-90 opacity-0" : "seal-breathe opacity-100"
               }`}
             />

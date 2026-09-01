@@ -134,7 +134,7 @@
 
 @font-face {
   font-family: "Galaktioni";
-  src: url("./assets/galaktioni.ttf") format("truetype");
+  src: url("/fonts/galaktioni.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

@@ -5,8 +5,8 @@ import seal from "@/assets/seal.png";
 import venue from "@/assets/venue.jpg.asset.json";
 
 /** Scene 1 timeline, matched to the CSS animations in styles.css. */
-const FADE_AT = 6_400;
-const UNMOUNT_AT = 7_800;
+const FADE_AT = 5_000;
+const UNMOUNT_AT = 6_200;
 
 export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
   const [fading, setFading] = useState(false);
@@ -32,6 +32,16 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
+      {/* Layer 1 — the scenery, on its own slower zoom track */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="intro-venue absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${venue.url})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-ink/25" />
+      </div>
+
+      {/* Layer 2 — the envelope, faster zoom track, painted above the scenery */}
       <div
         className="intro-zoom absolute inset-0"
         style={
@@ -42,15 +52,8 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
           } as React.CSSProperties
         }
       >
-        {/* The scenery hiding inside the envelope */}
-        <div
-          className="intro-venue absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${venue.url})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-ink/25" />
-
         {/* Envelope body: bottom pocket + two side flaps, drop away together */}
-        <div className="intro-env-body absolute inset-0 z-10 will-change-transform">
+        <div className="intro-env-body absolute inset-0 z-20 will-change-transform">
           <div
             className="env-paper absolute inset-y-0 left-0 w-[54%]"
             style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
@@ -67,7 +70,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
 
         {/* Top flap with the blank olive wax seal at its tip */}
         <div
-          className="absolute inset-x-0 top-0 z-20 h-[52%]"
+          className="absolute inset-x-0 top-0 z-30 h-[52%]"
           style={{ transformStyle: "preserve-3d" }}
         >
           <div

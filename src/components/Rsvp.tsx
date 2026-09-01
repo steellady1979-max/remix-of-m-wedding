@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import cake from "@/assets/cake.png.asset.json";
+import cake from "@/assets/rsvp-cake.png.asset.json";
 
 type Answer = "yes" | "no" | null;
 

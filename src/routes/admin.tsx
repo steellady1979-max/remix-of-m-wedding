@@ -4,7 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 
+const ACCESS_CODE = "MARIAM2026";
 const TITLE = "ადმინ პანელი — მარიამი & ალექსანდრე";
+
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 type Rsvp = {
@@ -63,6 +65,14 @@ function AdminPage() {
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [code, setCode] = useState("");
+  const [codeOk, setCodeOk] = useState(false);
+  const [codeError, setCodeError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("admin-code") === "ok") setCodeOk(true);
+  }, []);
+
 
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [wishes, setWishes] = useState<Wish[]>([]);
@@ -99,6 +109,48 @@ function AdminPage() {
   if (!ready) {
     return <div className="min-h-screen bg-champagne" />;
   }
+
+  if (!codeOk) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-champagne px-6 font-sans text-ink">
+        <div className="w-full max-w-sm rounded-2xl border border-olive/20 bg-white p-8 text-center shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
+          <p className="text-[0.65rem] tracking-[0.45em] text-olive">წვდომა</p>
+          <h1 className="mt-4 font-display text-2xl font-light text-olive">წვდომის კოდი</h1>
+          <div className="hairline mx-auto mt-6 w-24" />
+          <form
+            className="mt-8 space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (code.trim() === ACCESS_CODE) {
+                sessionStorage.setItem("admin-code", "ok");
+                setCodeOk(true);
+                setCodeError(null);
+              } else {
+                setCodeError("კოდი არასწორია");
+              }
+            }}
+          >
+            <input
+              className={`${inputClass} text-center tracking-[0.3em]`}
+              type="password"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="კოდი"
+              autoComplete="off"
+            />
+            <button
+              type="submit"
+              className="w-full rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white"
+            >
+              შესვლა
+            </button>
+            {codeError && <p className="text-xs text-olive">{codeError}</p>}
+          </form>
+        </div>
+      </main>
+    );
+  }
+
 
   if (!session) {
     return (

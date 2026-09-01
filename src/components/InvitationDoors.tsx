@@ -62,7 +62,7 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={venue.url}
-          alt="საქორწილო სივრცე — აკვარელის სტილში დახატული ხედი ტბასა და თეთრ შენობასთან"
+          alt="წყვილი საქორწილო სივრცის ხედის წინ"
           className={`h-full w-full object-cover transition-transform duration-[2600ms] ease-drape ${
             opening ? "scale-100" : "scale-110"
           }`}

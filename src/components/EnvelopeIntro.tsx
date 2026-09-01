@@ -123,7 +123,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
             className={`absolute inset-y-0 right-0 w-[62%] bg-cover bg-right-top transition-transform duration-[1600ms] ease-drape ${
               parted ? "translate-x-[105%]" : "translate-x-0"
             }`}
-            style={{ backgroundImage: `url(${drape})`, transform: parted ? undefined : "scaleX(-1)" }}
+            style={{ backgroundImage: `url(${drape})`, backgroundSize: "cover" }}
           />
 
           {/* Satin bow holding the drapes closed */}

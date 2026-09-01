@@ -1,24 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { useEffect, useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+import { getAdminData, type AdminRsvp, type AdminWish } from "@/lib/admin.functions";
 
-const ACCESS_CODE = "MARIAM2026";
 const TITLE = "ადმინ პანელი — მარიამი & ალექსანდრე";
-
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
-
-type Rsvp = {
-  id: string;
-  attending: boolean;
-  guest_name: string | null;
-  plus_one: boolean;
-  plus_one_name: string | null;
-  created_at: string;
-};
-
-type Wish = { id: string; message: string; created_at: string };
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -59,75 +46,51 @@ function fmt(iso: string) {
 }
 
 function AdminPage() {
-  const [session, setSession] = useState<unknown>(null);
-  const [ready, setReady] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const fetchData = useServerFn(getAdminData);
+
   const [code, setCode] = useState("");
-  const [codeOk, setCodeOk] = useState(false);
-  const [codeError, setCodeError] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [rsvps, setRsvps] = useState<AdminRsvp[]>([]);
+  const [wishes, setWishes] = useState<AdminWish[]>([]);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("admin-code") === "ok") setCodeOk(true);
-  }, []);
-
-
-  const [rsvps, setRsvps] = useState<Rsvp[]>([]);
-  const [wishes, setWishes] = useState<Wish[]>([]);
-  const [loadError, setLoadError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setReady(true);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
-  const load = useCallback(async () => {
-    setLoadError(null);
-    await supabase.rpc("claim_admin");
-    const [r, w] = await Promise.all([
-      supabase.from("rsvps").select("*").order("created_at", { ascending: false }),
-      supabase.from("wishes").select("*").order("created_at", { ascending: false }),
-    ]);
-    if (r.error || w.error) {
-      setLoadError("მონაცემები ვერ ჩაიტვირთა");
-      return;
+  async function load(pass: string) {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetchData({ data: { code: pass } });
+      setRsvps(res.rsvps);
+      setWishes(res.wishes);
+      setUnlocked(true);
+      sessionStorage.setItem("admin-pass", pass);
+    } catch {
+      setUnlocked(false);
+      sessionStorage.removeItem("admin-pass");
+      setError("პაროლი არასწორია");
+    } finally {
+      setBusy(false);
     }
-    setRsvps((r.data ?? []) as Rsvp[]);
-    setWishes((w.data ?? []) as Wish[]);
-  }, []);
-
-  useEffect(() => {
-    if (session) void load();
-  }, [session, load]);
-
-  if (!ready) {
-    return <div className="min-h-screen bg-champagne" />;
   }
 
-  if (!codeOk) {
+  useEffect(() => {
+    const saved = sessionStorage.getItem("admin-pass");
+    if (saved) void load(saved);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!unlocked) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-champagne px-6 font-sans text-ink">
         <div className="w-full max-w-sm rounded-2xl border border-olive/20 bg-white p-8 text-center shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
-          <p className="text-[0.65rem] tracking-[0.45em] text-olive">წვდომა</p>
-          <h1 className="mt-4 font-display text-2xl font-light text-olive">წვდომის კოდი</h1>
+          <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინი</p>
+          <h1 className="mt-4 font-display text-2xl font-light text-olive">პაროლი</h1>
           <div className="hairline mx-auto mt-6 w-24" />
           <form
             className="mt-8 space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              if (code.trim() === ACCESS_CODE) {
-                sessionStorage.setItem("admin-code", "ok");
-                setCodeOk(true);
-                setCodeError(null);
-              } else {
-                setCodeError("კოდი არასწორია");
-              }
+              void load(code);
             }}
           >
             <input
@@ -135,55 +98,6 @@ function AdminPage() {
               type="password"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="კოდი"
-              autoComplete="off"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white"
-            >
-              შესვლა
-            </button>
-            {codeError && <p className="text-xs text-olive">{codeError}</p>}
-          </form>
-        </div>
-      </main>
-    );
-  }
-
-
-  if (!session) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-champagne px-6 font-sans text-ink">
-        <div className="w-full max-w-sm rounded-2xl border border-olive/20 bg-white p-8 text-center shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
-          <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინი</p>
-          <h1 className="mt-4 font-display text-2xl font-light text-olive">შესვლა</h1>
-          <div className="hairline mx-auto mt-6 w-24" />
-
-          <form
-            className="mt-8 space-y-4 text-left"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              setBusy(true);
-              setAuthError(null);
-              const { error } = await supabase.auth.signInWithPassword({ email, password });
-              setBusy(false);
-              if (error) setAuthError("ელფოსტა ან პაროლი არასწორია");
-            }}
-          >
-            <input
-              className={inputClass}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="ელფოსტა"
-              autoComplete="email"
-            />
-            <input
-              className={inputClass}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               placeholder="პაროლი"
               autoComplete="current-password"
             />
@@ -194,38 +108,7 @@ function AdminPage() {
             >
               შესვლა
             </button>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={async () => {
-                setBusy(true);
-                setAuthError(null);
-                const { error } = await supabase.auth.signUp({
-                  email,
-                  password,
-                  options: { emailRedirectTo: `${window.location.origin}/admin` },
-                });
-                setBusy(false);
-                if (error) setAuthError("რეგისტრაცია ვერ შესრულდა");
-                else setAuthError("შეამოწმეთ ელფოსტა დასადასტურებლად");
-              }}
-              className="w-full rounded-full border border-olive/30 px-6 py-3 text-sm tracking-[0.2em] text-olive transition-colors hover:bg-olive-mist/60"
-            >
-              რეგისტრაცია
-            </button>
-            <button
-              type="button"
-              onClick={async () => {
-                const result = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: window.location.origin,
-                });
-                if (result.error) setAuthError("Google-ით შესვლა ვერ მოხერხდა");
-              }}
-              className="w-full rounded-full border border-olive/20 px-6 py-3 text-sm tracking-[0.2em] text-ink/70 transition-colors hover:bg-olive-mist/40"
-            >
-              Google-ით შესვლა
-            </button>
-            {authError && <p className="text-center text-xs text-olive">{authError}</p>}
+            {error && <p className="text-xs text-olive">{error}</p>}
           </form>
         </div>
       </main>
@@ -235,6 +118,7 @@ function AdminPage() {
   const yes = rsvps.filter((r) => r.attending);
   const no = rsvps.filter((r) => !r.attending);
   const guests = yes.reduce((n, r) => n + 1 + (r.plus_one ? 1 : 0), 0);
+  const loadError: string | null = error;
 
   return (
     <main className="min-h-screen bg-champagne px-5 py-14 font-sans text-ink sm:px-8">
@@ -247,7 +131,11 @@ function AdminPage() {
           <div className="hairline mx-auto mt-6 w-32" />
           <button
             type="button"
-            onClick={() => supabase.auth.signOut()}
+            onClick={() => {
+              sessionStorage.removeItem("admin-pass");
+              setUnlocked(false);
+              setCode("");
+            }}
             className="mt-6 text-[0.7rem] tracking-[0.3em] text-ink/50 underline-offset-4 hover:underline"
           >
             გამოსვლა

@@ -92,74 +92,77 @@ function Index() {
 
         {/* Countdown */}
         <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center">
-          <div>
+          <Reveal>
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">დარჩენილია</p>
             <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
               ჩვენს დღემდე
             </h2>
-          </div>
-          <div className="w-full max-w-md">
+          </Reveal>
+          <Reveal delay={120} className="w-full max-w-md">
             <Countdown target="2026-10-17T12:00:00+04:00" />
-          </div>
+          </Reveal>
         </section>
 
         {/* Schedule */}
         <section className="flex flex-col items-center gap-10 bg-white px-6 py-24">
-          <p className="text-[0.7rem] tracking-[0.45em] text-olive">დღის განრიგი</p>
+          <Reveal>
+            <p className="text-[0.7rem] tracking-[0.45em] text-olive">დღის განრიგი</p>
+          </Reveal>
 
           <ul className="w-full max-w-md space-y-12">
             {SCHEDULE.map((item) => (
-              <li key={item.time} className="flex flex-col items-center gap-5 text-center">
-                <span className="font-display text-2xl font-light tabular-nums text-olive">
-                  {item.time}
-                </span>
-                <span className="text-sm leading-relaxed text-ink/80">{item.title}</span>
+              <Reveal key={item.time}>
+                <li className="flex flex-col items-center gap-5 text-center">
+                  <span className="font-display text-2xl font-light tabular-nums text-olive">
+                    {item.time}
+                  </span>
+                  <span className="text-sm leading-relaxed text-ink/80">{item.title}</span>
 
-                {item.image && (
-                  <img
-                    src={item.image}
-                    alt={item.alt ?? ""}
-                    loading="lazy"
-                    className="w-full rounded-lg border border-olive/15 object-cover"
-                  />
-                )}
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.alt ?? ""}
+                      loading="lazy"
+                      className="w-full rounded-lg border border-olive/15 object-cover"
+                    />
+                  )}
 
-                {item.href && (
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-md border border-olive/30 px-5 py-2 text-xs tracking-[0.25em] text-olive transition-colors hover:bg-olive hover:text-white"
-                  >
-                    რუკაზე გადასვლა
-                  </a>
-                )}
-              </li>
+                  {item.href && (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-md border border-olive/30 px-5 py-2 text-xs tracking-[0.25em] text-olive transition-colors hover:bg-olive hover:text-white"
+                    >
+                      რუკაზე გადასვლა
+                    </a>
+                  )}
+                </li>
+              </Reveal>
             ))}
           </ul>
         </section>
 
         {/* RSVP */}
         <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center">
-          <div>
-            <p className="text-[0.7rem] tracking-[0.45em] text-olive">დასწრება</p>
-            <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
-              შეძლებთ მობრძანებას?
-            </h2>
-          </div>
-          <Rsvp />
+          <Reveal className="w-full max-w-md">
+            <Rsvp />
+          </Reveal>
         </section>
 
         {/* Wishes envelope */}
         <section className="flex flex-col items-center gap-8 bg-white px-6 py-24 text-center">
-          <div>
+          <Reveal>
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">სურვილები</p>
             <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
               სურვილების კონვერტი
             </h2>
-          </div>
-          <WishEnvelope />
+          </Reveal>
+          <Reveal delay={120}>
+            <WishEnvelope />
+          </Reveal>
         </section>
+
 
         <footer className="bg-olive px-6 py-12 text-center">
           <p className="font-display text-lg font-light text-white">მარიამი & ალექსანდრე</p>

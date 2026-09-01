@@ -1,11 +1,14 @@
 import { useState } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import envelope from "@/assets/wish-envelope.png.asset.json";
 
 export function WishEnvelope() {
   const [open, setOpen] = useState(false);
   const [wish, setWish] = useState("");
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="flex w-full max-w-md flex-col items-center gap-6">
@@ -41,12 +44,25 @@ export function WishEnvelope() {
               />
               <button
                 type="button"
-                disabled={wish.trim().length < 3}
-                onClick={() => setSent(true)}
+                disabled={wish.trim().length < 3 || saving}
+                onClick={async () => {
+                  setSaving(true);
+                  setError(null);
+                  const { error: dbError } = await supabase
+                    .from("wishes")
+                    .insert({ message: wish.trim() });
+                  setSaving(false);
+                  if (dbError) {
+                    setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
+                    return;
+                  }
+                  setSent(true);
+                }}
                 className="w-full rounded-md bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
               >
-                სურვილის დატოვება
+                {saving ? "იგზავნება..." : "სურვილის დატოვება"}
               </button>
+              {error && <p className="text-xs text-destructive">{error}</p>}
             </>
           )}
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import cake from "@/assets/cake.png.asset.json";
 
 type Answer = "yes" | "no" | null;
@@ -29,6 +30,8 @@ export function Rsvp() {
   const [plusOne, setPlusOne] = useState(false);
   const [guestName, setGuestName] = useState("");
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const canSend =
     answer === "no" ||
@@ -54,9 +57,23 @@ export function Rsvp() {
 
       <form
         className="mt-8 space-y-5"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (canSend) setSent(true);
+          if (!canSend || saving) return;
+          setSaving(true);
+          setError(null);
+          const { error: dbError } = await supabase.from("rsvps").insert({
+            attending: answer === "yes",
+            guest_name: answer === "yes" ? name.trim() : null,
+            plus_one: answer === "yes" && plusOne,
+            plus_one_name: answer === "yes" && plusOne ? guestName.trim() : null,
+          });
+          setSaving(false);
+          if (dbError) {
+            setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
+            return;
+          }
+          setSent(true);
         }}
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -122,12 +139,13 @@ export function Rsvp() {
         {answer && (
           <button
             type="submit"
-            disabled={!canSend}
+            disabled={!canSend || saving}
             className="w-full animate-fade-in rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
           >
-            გაგზავნა
+            {saving ? "იგზავნება..." : "გაგზავნა"}
           </button>
         )}
+        {error && <p className="text-xs text-destructive">{error}</p>}
       </form>
     </Card>
   );

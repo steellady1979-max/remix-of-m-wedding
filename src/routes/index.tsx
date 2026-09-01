@@ -59,10 +59,10 @@ function Index() {
             <p className="text-[0.65rem] uppercase tracking-[0.45em] text-olive">
               ჩვენი ქორწილი
             </p>
-            <h1 className="mt-6 font-display text-4xl font-light leading-tight text-olive sm:text-6xl">
-              მარიამი
-              <span className="mx-3 font-display text-3xl text-olive-soft sm:text-4xl">&</span>
-              ალექსანდრე
+            <h1 className="mt-6 flex flex-col items-center gap-2 font-display text-3xl font-light leading-tight text-olive sm:text-5xl">
+              <span>მარიამი</span>
+              <span className="text-xl text-olive-soft sm:text-3xl">&</span>
+              <span>ალექსანდრე</span>
             </h1>
             <div className="hairline mx-auto mt-8 w-40" />
             <p className="mt-6 text-sm tracking-[0.3em] text-ink/70">17 · 10 · 2026</p>

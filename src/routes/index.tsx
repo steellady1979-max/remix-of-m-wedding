@@ -1,24 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { EnvelopeIntro } from "@/components/EnvelopeIntro";
+import venue from "@/assets/venue.jpg.asset.json";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Wedding Invitation | Lakeside Celebration" },
+      {
+        name: "description",
+        content:
+          "An immersive wedding invitation: a wax-sealed envelope opens onto a lakeside garden venue.",
+      },
+      { property: "og:title", content: "Wedding Invitation | Lakeside Celebration" },
+      {
+        property: "og:description",
+        content:
+          "An immersive wedding invitation: a wax-sealed envelope opens onto a lakeside garden venue.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [revealed, setRevealed] = useState(false);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
+    <main className="relative min-h-screen overflow-x-hidden bg-ink">
+      <EnvelopeIntro onFinished={() => setRevealed(true)} />
+
+      <div
+        className="fixed inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${venue.url})` }}
       />
-    </div>
+      <div className="fixed inset-0 bg-gradient-to-b from-background/10 via-background/5 to-ink/40" />
+
+      <div
+        className={`relative z-10 transition-all duration-1000 ease-out ${
+          revealed ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        }`}
+      >
+        {/* Intentionally blank content slots — custom text blocks go here later. */}
+        <section className="flex min-h-screen flex-col items-center justify-center gap-8 px-6 py-24" />
+        <section className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-24" />
+        <section className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-24" />
+      </div>
+    </main>
   );
 }

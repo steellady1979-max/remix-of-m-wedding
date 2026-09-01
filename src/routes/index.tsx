@@ -6,11 +6,11 @@ import { InvitationDoors } from "@/components/InvitationDoors";
 import { Reveal } from "@/components/Reveal";
 import { Rsvp } from "@/components/Rsvp";
 import { WishEnvelope } from "@/components/WishEnvelope";
-import couple from "@/assets/couple.jpg.asset.json";
-import church from "@/assets/church.jpg.asset.json";
-import ceremony from "@/assets/ceremony.jpg.asset.json";
-import dinner from "@/assets/dinner.jpg.asset.json";
-import invitation from "@/assets/wedding-invitation.png.asset.json";
+const couple = { url: "/images/couple.jpg" };
+const church = { url: "/images/church.jpg" };
+const ceremony = { url: "/images/ceremony.jpg" };
+const dinner = { url: "/images/dinner.jpg" };
+const invitation = { url: "/images/wedding-invitation.png" };
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =

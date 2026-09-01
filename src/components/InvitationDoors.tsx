@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import doorPanel from "@/assets/door-panel-white.jpg";
-import bow from "@/assets/chiffon-bow-olive.png";
-import venue from "@/assets/couple.jpg.asset.json";
+const doorPanel = "/images/door-panel-white.jpg";
+const bow = "/images/chiffon-bow-olive.png";
+const venue = { url: "/images/couple.jpg" };
 
 /** Timings, matched to the CSS transitions below. */
 const BOW_RELEASE = 520;

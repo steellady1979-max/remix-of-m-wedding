@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import doorPanel from "@/assets/door-panel.jpg";
-import bow from "@/assets/chiffon-bow.png";
+import doorPanel from "@/assets/door-panel-white.jpg";
+import bow from "@/assets/chiffon-bow-olive.png";
 import venue from "@/assets/couple.jpg.asset.json";
 
 /** Timings, matched to the CSS transitions below. */

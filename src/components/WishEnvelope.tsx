@@ -25,6 +25,9 @@ export function WishEnvelope() {
             open ? "-translate-y-2 rotate-[-1deg]" : ""
           }`}
         />
+        <span className="pointer-events-none absolute inset-x-0 bottom-[18%] text-center font-display text-base tracking-[0.3em] text-olive sm:text-lg">
+          დააჭირე აქ
+        </span>
       </button>
 
       {open && (

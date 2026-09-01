@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import envelope from "@/assets/wish-envelope.png.asset.json";
+const envelope = { url: "/images/wish-envelope.png" };
 
 export function WishEnvelope() {
   const [open, setOpen] = useState(false);

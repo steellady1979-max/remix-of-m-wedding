@@ -6,9 +6,7 @@ import { useEffect, useRef } from "react";
  * Autoplays where allowed; otherwise starts on the user's first natural
  * interaction (e.g. tapping the envelope) — no "play music" button needed.
  */
-import music from "@/assets/venus-and-flower.mp3.asset.json";
-
-const MUSIC_URL = music.url;
+const MUSIC_URL = "/audio/venus-and-flower.mp3";
 
 export function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);

@@ -14,6 +14,7 @@ export function ScratchDate({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawing = useRef(false);
   const last = useRef<{ x: number; y: number } | null>(null);
+  const ticks = useRef(0);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export function ScratchDate({
 
       const g = ctx.createLinearGradient(0, 0, rect.width, rect.height);
       g.addColorStop(0, "#6b7a4f");
-      g.addColorStop(0.5, "#8b9a६f".replace("६", "6"));
+      g.addColorStop(0.5, "#8b9a6f");
       g.addColorStop(1, "#5d6b45");
       ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = g;
@@ -62,7 +63,9 @@ export function ScratchDate({
     ctx.stroke();
     last.current = { x, y };
 
-    // Cheap progress check on a downsampled read.
+    // Progress check is throttled — getImageData is the expensive part.
+    ticks.current += 1;
+    if (ticks.current % 8 !== 0) return;
     const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
     let clear = 0;
     const step = 40 * 4;

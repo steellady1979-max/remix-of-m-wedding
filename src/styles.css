@@ -152,13 +152,20 @@
 
 @layer components {
   .env-flap {
+    background-image:
+      linear-gradient(to bottom, rgba(255, 253, 246, 0.45) 30%, rgba(122, 98, 54, 0.16) 100%),
+      var(--paper);
     filter: drop-shadow(0 3px 2px rgba(86, 70, 38, 0.55))
       drop-shadow(0 14px 22px rgba(86, 70, 38, 0.3)) brightness(1.05);
   }
 
   .env-paper {
-    background-image: var(--paper);
-    background-size: 130% auto;
+    background-image:
+      linear-gradient(to top, rgba(122, 98, 54, 0.13), rgba(255, 255, 255, 0) 45%),
+      var(--paper);
+    background-size:
+      cover,
+      130% auto;
     background-position: center;
     box-shadow: inset 0 0 140px rgba(120, 100, 60, 0.16);
     filter: drop-shadow(0 -2px 2px rgba(86, 70, 38, 0.4))

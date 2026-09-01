@@ -7,39 +7,29 @@ import drape from "@/assets/drape.png";
 import bow from "@/assets/bow.png";
 import venue from "@/assets/venue.jpg.asset.json";
 
-/** Milestones of the intro choreography (ms from mount). */
-const T = {
-  seal: 700,
-  flaps: 1200,
-  untie: 3000,
-  part: 3600,
-  done: 6200,
-};
-
-type Stage = "closed" | "opening" | "parting" | "done";
+/** Overlay lifetime, matched to the CSS timeline in styles.css. */
+const FADE_AT = 12_500;
+const UNMOUNT_AT = 13_900;
 
 export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
-  const [stage, setStage] = useState<Stage>("closed");
+  const [fading, setFading] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [muted, setMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Choreography timeline — fully automatic, no tap required.
   useEffect(() => {
     const timers = [
-      window.setTimeout(() => setStage("opening"), T.seal),
-      window.setTimeout(() => setStage("parting"), T.part),
-      window.setTimeout(() => setStage("done"), T.done),
+      window.setTimeout(() => setFading(true), FADE_AT),
       window.setTimeout(() => {
         setHidden(true);
         onFinished?.();
-      }, T.done + 1200),
+      }, UNMOUNT_AT),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onFinished]);
 
-  // Autoplay music. Mobile browsers only allow muted autoplay, so we start
-  // muted and unmute the moment any gesture (or a permissive browser) allows it.
+  // Autoplay: start muted (the only thing mobile browsers allow), then unmute
+  // as soon as the browser or the first gesture permits it.
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -47,7 +37,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
     const tryUnmuted = async () => {
       try {
         audio.muted = false;
-        audio.volume = 0.55;
+        audio.volume = 0.5;
         await audio.play();
         setMuted(false);
         return true;
@@ -56,7 +46,14 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
       }
     };
 
-    const start = async () => {
+    const events = ["pointerdown", "touchstart", "keydown", "scroll"] as const;
+    const onGesture = async () => {
+      if (await tryUnmuted()) {
+        events.forEach((e) => window.removeEventListener(e, onGesture));
+      }
+    };
+
+    void (async () => {
       if (await tryUnmuted()) return;
       audio.muted = true;
       try {
@@ -64,21 +61,10 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
       } catch {
         /* ignore */
       }
-      const onGesture = async () => {
-        if (await tryUnmuted()) remove();
-      };
-      const remove = () => {
-        ["pointerdown", "touchstart", "keydown", "scroll"].forEach((e) =>
-          window.removeEventListener(e, onGesture),
-        );
-      };
-      ["pointerdown", "touchstart", "keydown", "scroll"].forEach((e) =>
-        window.addEventListener(e, onGesture, { passive: true }),
-      );
-      return remove;
-    };
+      events.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
+    })();
 
-    void start();
+    return () => events.forEach((e) => window.removeEventListener(e, onGesture));
   }, []);
 
   const toggleSound = () => {
@@ -90,9 +76,6 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
     setMuted(next);
   };
 
-  const opened = stage !== "closed";
-  const parted = stage === "parting" || stage === "done";
-
   return (
     <>
       <audio ref={audioRef} src="/audio/ambience.mp3" loop playsInline preload="auto" />
@@ -100,93 +83,90 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
       {!hidden && (
         <div
           aria-hidden
-          className={`fixed inset-0 z-50 overflow-hidden bg-ink transition-opacity duration-[1200ms] ease-out ${
-            stage === "done" ? "opacity-0" : "opacity-100"
+          className={`fixed inset-0 z-50 overflow-hidden bg-champagne transition-opacity duration-[1400ms] ease-out ${
+            fading ? "opacity-0" : "opacity-100"
           }`}
-          style={{ perspective: "1400px" }}
         >
-          {/* Revealed venue backdrop */}
+          {/* Everything lives inside one slowly zooming-out stage, exactly as in
+              the reference: a tight close-up of the sealed envelope that pulls
+              back until the venue fills the screen. */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${venue.url})` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink/10 via-transparent to-ink/25" />
-
-          {/* Silk drapes that part after the envelope opens */}
-          <div
-            className={`absolute inset-y-0 left-0 w-[62%] bg-cover bg-left-top transition-transform duration-[1600ms] ease-drape ${
-              parted ? "-translate-x-[105%]" : "translate-x-0"
-            }`}
-            style={{ backgroundImage: `url(${drape})`, backgroundSize: "cover" }}
-          />
-          <div
-            className={`absolute inset-y-0 right-0 w-[62%] bg-cover bg-right-top transition-transform duration-[1600ms] ease-drape ${
-              parted ? "translate-x-[105%]" : "translate-x-0"
-            }`}
-            style={{ backgroundImage: `url(${drape})`, backgroundSize: "cover" }}
-          />
-
-          {/* Satin bow holding the drapes closed */}
-          <img
-            src={bow}
-            alt=""
-            width={1280}
-            height={768}
-            className={`absolute left-1/2 top-1/2 w-[78%] max-w-md -translate-x-1/2 -translate-y-1/2 transition-all duration-[900ms] ease-out ${
-              parted ? "scale-125 opacity-0" : "scale-100 opacity-100"
-            }`}
-            style={{ transitionDelay: parted ? "0ms" : `${T.untie}ms` }}
-          />
-
-          {/* Envelope flaps */}
-          <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+            className="intro-zoom absolute inset-0"
+            style={
+              {
+                perspective: "1500px",
+                transformStyle: "preserve-3d",
+                "--paper": `url(${paper})`,
+              } as React.CSSProperties
+            }
+          >
+            {/* Revealed backdrop: the venue watercolour */}
             <div
-              className={`env-flap absolute inset-x-0 bottom-0 h-[58%] origin-bottom ${
-                opened ? "flap-bottom-open" : ""
-              }`}
-              style={{
-                backgroundImage: `url(${paper})`,
-                clipPath: "polygon(0 100%, 100% 100%, 50% 0)",
-              }}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${venue.url})` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-ink/20" />
+
+            {/* Silk drapes hanging from the sash, holding the reveal closed */}
+            <div
+              className="intro-drape-l absolute left-0 top-[38%] h-[74%] w-[58%] origin-top bg-cover bg-top will-change-transform"
+              style={{ backgroundImage: `url(${drape})` }}
             />
             <div
-              className={`env-flap absolute inset-y-0 left-0 w-[58%] origin-left ${
-                opened ? "flap-left-open" : ""
-              }`}
-              style={{
-                backgroundImage: `url(${paper})`,
-                clipPath: "polygon(0 0, 100% 50%, 0 100%)",
-              }}
-            />
-            <div
-              className={`env-flap absolute inset-y-0 right-0 w-[58%] origin-right ${
-                opened ? "flap-right-open" : ""
-              }`}
-              style={{
-                backgroundImage: `url(${paper})`,
-                clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
-              }}
-            />
-            <div
-              className={`env-flap absolute inset-x-0 top-0 z-10 h-[52%] origin-top ${
-                opened ? "flap-top-open" : ""
-              }`}
-              style={{
-                backgroundImage: `url(${paper})`,
-                clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-              }}
+              className="intro-drape-r absolute right-0 top-[38%] h-[74%] w-[58%] origin-top bg-cover bg-top will-change-transform"
+              style={{ backgroundImage: `url(${drape})`, transform: "scaleX(-1)" }}
             />
 
-            {/* Blank olive wax seal */}
+            {/* Satin sash + bow across the middle */}
             <img
-              src={seal}
+              src={bow}
               alt=""
-              width={816}
-              height={816}
-              className={`absolute left-1/2 top-1/2 z-20 w-[24vw] max-w-[150px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_10px_20px_rgba(60,50,25,0.28)] transition-all duration-700 ease-out ${
-                opened ? "scale-90 opacity-0" : "seal-breathe opacity-100"
-              }`}
+              width={1280}
+              height={768}
+              className="intro-bow absolute left-1/2 top-[44%] w-[135%] max-w-none -translate-x-1/2 -translate-y-1/2 will-change-transform"
             />
+
+            {/* Envelope body: bottom pocket + side flaps, drops away together */}
+            <div className="intro-env-body absolute inset-0 will-change-transform">
+              <div
+                className="env-paper absolute inset-y-0 left-0 w-[56%]"
+                style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
+              />
+              <div
+                className="env-paper absolute inset-y-0 right-0 w-[56%]"
+                style={{ clipPath: "polygon(100% 0, 0 50%, 100% 100%)" }}
+              />
+              <div
+                className="env-paper absolute inset-x-0 bottom-0 h-[62%]"
+                style={{ clipPath: "polygon(0 100%, 100% 100%, 50% 0)" }}
+              />
+            </div>
+
+            {/* Top flap: folds up and over */}
+            <div
+              className="absolute inset-x-0 top-0 z-10 h-[54%] origin-top"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              <div
+                className="intro-flap-top absolute inset-0 origin-top will-change-transform"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div
+                  className="env-paper absolute inset-0"
+                  style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
+                />
+                {/* Blank olive wax seal on the flap tip */}
+                <div className="intro-seal absolute left-1/2 top-[92%] z-20 -translate-x-1/2 -translate-y-1/2">
+                  <img
+                    src={seal}
+                    alt=""
+                    width={816}
+                    height={816}
+                    className="w-[26vw] max-w-[160px] drop-shadow-[0_10px_20px_rgba(60,50,25,0.28)]"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -195,7 +175,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
         type="button"
         onClick={toggleSound}
         aria-label={muted ? "Play music" : "Mute music"}
-        className="fixed bottom-5 right-5 z-[60] grid h-11 w-11 place-items-center rounded-full border border-foreground/15 bg-background/70 text-foreground/70 backdrop-blur transition-colors hover:text-foreground"
+        className="fixed bottom-5 right-5 z-[60] grid h-11 w-11 place-items-center rounded-full border border-white/40 bg-white/70 text-ink/80 backdrop-blur transition-colors hover:text-ink"
       >
         {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
       </button>

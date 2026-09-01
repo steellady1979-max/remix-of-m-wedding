@@ -10,12 +10,12 @@ const inputClass =
 function Card({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full max-w-md overflow-hidden rounded-2xl border border-olive/20 bg-white shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
-      <div className="flex items-end justify-center bg-olive-mist/60 px-6 pt-8">
+      <div className="flex items-end justify-center bg-olive-mist/60 px-6 pt-6">
         <img
           src={cake.url}
           alt="თეთრი საქორწილო ტორტი"
           loading="lazy"
-          className="h-44 w-auto object-contain mix-blend-multiply"
+          className="h-72 w-auto object-contain mix-blend-multiply sm:h-80"
         />
       </div>
       <div className="px-6 pb-10 pt-8 text-center sm:px-8">{children}</div>

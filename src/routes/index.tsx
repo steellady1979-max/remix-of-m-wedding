@@ -63,9 +63,9 @@ function Index() {
             alt="წყვილი საქორწილო სივრცის ხედის წინ"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/45 to-white/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/45 via-white/25 to-white/70" />
 
-          <div className="relative animate-fade-in">
+          <div className="relative animate-fade-in rounded-xl bg-white/70 px-8 py-10 backdrop-blur-[2px]">
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">ჩვენი ქორწილი</p>
             <h1 className="mt-6 flex flex-col items-center gap-2 font-display text-3xl font-light leading-tight text-olive sm:text-5xl">
               <span>მარიამი</span>

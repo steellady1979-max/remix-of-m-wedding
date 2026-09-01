@@ -115,25 +115,14 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
         </div>
       </div>
 
-      {/* Prompt + skip */}
+      {/* Prompt */}
       <p
-        className={`absolute inset-x-0 bottom-24 z-10 text-center text-[0.6rem] uppercase tracking-[0.45em] text-white/85 transition-opacity duration-500 ${
+        className={`absolute inset-x-0 bottom-24 z-10 text-center text-[0.7rem] tracking-[0.45em] text-white/85 transition-opacity duration-500 ${
           opening ? "opacity-0" : "animate-pulse opacity-100"
         }`}
       >
         შეეხე გასახსნელად
       </p>
-
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          skip();
-        }}
-        className="absolute bottom-6 right-6 z-20 rounded-full border border-white/40 bg-white/10 px-4 py-2 text-[0.6rem] uppercase tracking-[0.3em] text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-      >
-        გამოტოვება
-      </button>
     </div>
   );
 }

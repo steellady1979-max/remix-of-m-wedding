@@ -75,7 +75,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
             style={{ transformStyle: "preserve-3d" }}
           >
             <div
-              className="env-paper absolute inset-0"
+              className="env-paper env-flap absolute inset-0"
               style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
             />
             <div className="intro-seal absolute left-1/2 top-[95%] z-30 -translate-x-1/2 -translate-y-1/2">
@@ -84,7 +84,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
                 alt=""
                 width={816}
                 height={816}
-                className="w-[26vw] max-w-[150px] drop-shadow-[0_10px_22px_rgba(60,50,25,0.3)]"
+                className="w-[30vw] max-w-[170px] drop-shadow-[0_10px_22px_rgba(60,50,25,0.3)]"
               />
             </div>
           </div>

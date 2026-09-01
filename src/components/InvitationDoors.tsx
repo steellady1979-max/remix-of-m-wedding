@@ -52,12 +52,12 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
       }}
       onTouchStart={(e) => {
         const t = e.touches[0];
-        touchStart.current = { x: t.clientX, y: t.clientY };
+        if (t) touchStart.current = { x: t.clientX, y: t.clientY };
       }}
       onTouchEnd={(e) => {
         const s = touchStart.current;
-        if (!s) return;
         const t = e.changedTouches[0];
+        if (!s || !t) return;
         if (Math.abs(t.clientX - s.x) > 30 || Math.abs(t.clientY - s.y) > 30) open();
         touchStart.current = null;
       }}

@@ -114,7 +114,7 @@ export function EnvelopeIntro({ onFinished }: { onFinished?: () => void }) {
             />
             <div
               className="intro-drape-r absolute right-0 top-[38%] h-[74%] w-[58%] origin-top bg-cover bg-top will-change-transform"
-              style={{ backgroundImage: `url(${drape})`, transform: "scaleX(-1)" }}
+              style={{ backgroundImage: `url(${drape})` }}
             />
 
             {/* Satin sash + bow across the middle */}

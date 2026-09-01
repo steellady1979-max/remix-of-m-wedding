@@ -4,7 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 
+const ACCESS_CODE = "MARIAM2026";
 const TITLE = "ადმინ პანელი — მარიამი & ალექსანდრე";
+
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 type Rsvp = {

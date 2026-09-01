@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import cake from "@/assets/cake.png.asset.json";
 
 type Answer = "yes" | "no" | null;
@@ -10,12 +11,12 @@ const inputClass =
 function Card({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full max-w-md overflow-hidden rounded-2xl border border-olive/20 bg-white shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
-      <div className="flex items-end justify-center bg-olive-mist/60 px-6 pt-8">
+      <div className="flex items-end justify-center bg-olive-mist/60 px-6 pt-6">
         <img
           src={cake.url}
           alt="თეთრი საქორწილო ტორტი"
           loading="lazy"
-          className="h-44 w-auto object-contain mix-blend-multiply"
+          className="h-72 w-auto object-contain mix-blend-multiply sm:h-80"
         />
       </div>
       <div className="px-6 pb-10 pt-8 text-center sm:px-8">{children}</div>
@@ -29,6 +30,8 @@ export function Rsvp() {
   const [plusOne, setPlusOne] = useState(false);
   const [guestName, setGuestName] = useState("");
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const canSend =
     answer === "no" ||
@@ -54,9 +57,23 @@ export function Rsvp() {
 
       <form
         className="mt-8 space-y-5"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (canSend) setSent(true);
+          if (!canSend || saving) return;
+          setSaving(true);
+          setError(null);
+          const { error: dbError } = await supabase.from("rsvps").insert({
+            attending: answer === "yes",
+            guest_name: answer === "yes" ? name.trim() : null,
+            plus_one: answer === "yes" && plusOne,
+            plus_one_name: answer === "yes" && plusOne ? guestName.trim() : null,
+          });
+          setSaving(false);
+          if (dbError) {
+            setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
+            return;
+          }
+          setSent(true);
         }}
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -122,12 +139,13 @@ export function Rsvp() {
         {answer && (
           <button
             type="submit"
-            disabled={!canSend}
+            disabled={!canSend || saving}
             className="w-full animate-fade-in rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
           >
-            გაგზავნა
+            {saving ? "იგზავნება..." : "გაგზავნა"}
           </button>
         )}
+        {error && <p className="text-xs text-destructive">{error}</p>}
       </form>
     </Card>
   );

@@ -83,6 +83,8 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
           } w-1/2 will-change-transform`}
           style={{
             backgroundImage: `url(${doorPanel})`,
+            backgroundSize: "200% 100%",
+            backgroundPosition: side === "left" ? "left center" : "right center",
             transform: opening
               ? `translateX(${side === "left" ? "-101%" : "101%"})`
               : "translateX(0)",
@@ -101,18 +103,20 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
       ))}
 
       {/* Chiffon bow at the seam */}
-      <div
-        className={`pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-all duration-[900ms] ease-out ${
-          opening ? "scale-90 opacity-0 blur-[2px]" : "bow-sway scale-100 opacity-100"
-        }`}
-      >
-        <img
-          src={bow}
-          alt=""
-          width={1024}
-          height={1536}
-          className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(40,35,20,0.35)]"
-        />
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          className={`transition-all duration-[900ms] ease-out ${
+            opening ? "scale-90 opacity-0 blur-[2px]" : "bow-sway opacity-100"
+          }`}
+        >
+          <img
+            src={bow}
+            alt=""
+            width={1024}
+            height={1536}
+            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(40,35,20,0.35)]"
+          />
+        </div>
       </div>
 
       {/* Prompt + skip */}

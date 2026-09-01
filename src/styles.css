@@ -153,65 +153,54 @@
 @layer components {
   .env-paper {
     background-image: var(--paper);
-    background-size: 260% auto;
+    background-size: 130% auto;
     background-position: center;
-    box-shadow: inset 0 0 120px rgba(120, 100, 60, 0.18);
-    filter: drop-shadow(0 2px 6px rgba(90, 75, 40, 0.32));
+    box-shadow: inset 0 0 140px rgba(120, 100, 60, 0.16);
+    filter: drop-shadow(0 3px 10px rgba(90, 75, 40, 0.3));
     backface-visibility: hidden;
   }
 
-  /* ---- Act 1: continuous slow zoom-out of the whole scene ---- */
+  /* Scene 1 — Act 1: slow continuous pull-back of the whole envelope */
   .intro-zoom {
-    transform-origin: 50% 46%;
-    animation: intro-zoom 12500ms cubic-bezier(0.36, 0, 0.22, 1) forwards;
+    transform-origin: 50% 48%;
+    animation: intro-zoom 6600ms cubic-bezier(0.33, 0, 0.2, 1) forwards;
   }
 
-  /* ---- Act 2: wax seal breathes, then releases ---- */
+  /* Venue keeps drifting back a touch longer than the envelope */
+  .intro-venue {
+    transform-origin: 50% 50%;
+    animation: intro-venue 7200ms cubic-bezier(0.33, 0, 0.25, 1) forwards;
+  }
+
+  /* Act 2: the wax seal breathes, then releases */
   .intro-seal {
-    animation: intro-seal-out 800ms ease-out 2700ms forwards;
+    animation: intro-seal-out 700ms cubic-bezier(0.4, 0, 0.2, 1) 2100ms forwards;
   }
   .intro-seal > img {
-    animation: seal-breathe 2.6s ease-in-out infinite;
+    animation: seal-breathe 2.8s ease-in-out infinite;
   }
 
-  /* ---- Act 3: top flap folds open, envelope body drops away ---- */
+  /* Act 3: the top flap folds open, then the envelope body drops away */
   .intro-flap-top {
-    animation: intro-flap-top 1800ms cubic-bezier(0.58, 0, 0.24, 1) 3000ms forwards;
+    animation: intro-flap-top 1700ms cubic-bezier(0.5, 0, 0.22, 1) 2500ms forwards;
   }
   .intro-env-body {
-    animation: intro-env-body 1900ms cubic-bezier(0.55, 0, 0.3, 1) 4700ms forwards;
-  }
-
-  /* ---- Act 4: silk sash + bow appear inside the opening ---- */
-  .intro-silk {
-    opacity: 0;
-    animation: intro-silk-in 1400ms ease-out 4300ms forwards;
-  }
-  .intro-bow {
-    opacity: 0;
-    animation:
-      intro-silk-in 1400ms ease-out 4300ms forwards,
-      intro-bow-untie 1600ms cubic-bezier(0.45, 0, 0.3, 1) 8300ms forwards;
-  }
-
-  /* ---- Act 5: drapes untie and sweep off screen ---- */
-  .intro-drape-l {
-    opacity: 0;
-    animation:
-      intro-silk-in 1400ms ease-out 4300ms forwards,
-      intro-drape-l 2400ms cubic-bezier(0.5, 0, 0.24, 1) 9100ms forwards;
-  }
-  .intro-drape-r {
-    opacity: 0;
-    animation:
-      intro-silk-in 1400ms ease-out 4300ms forwards,
-      intro-drape-r 2400ms cubic-bezier(0.5, 0, 0.24, 1) 9100ms forwards;
+    animation: intro-env-body 1900ms cubic-bezier(0.5, 0, 0.28, 1) 3900ms forwards;
   }
 }
 
 @keyframes intro-zoom {
   from {
-    transform: scale(2.65);
+    transform: scale(1.85);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes intro-venue {
+  from {
+    transform: scale(1.4);
   }
   to {
     transform: scale(1);
@@ -221,7 +210,7 @@
 @keyframes intro-seal-out {
   to {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.82);
+    transform: translate(-50%, -50%) scale(0.8);
   }
 }
 
@@ -231,90 +220,38 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.045);
+    transform: scale(1.04);
   }
 }
 
 @keyframes intro-flap-top {
-  from {
+  0% {
     transform: rotateX(0deg);
   }
-  to {
-    transform: rotateX(-178deg);
+  100% {
+    transform: rotateX(-172deg);
   }
 }
 
 @keyframes intro-env-body {
   from {
     transform: translateY(0);
-    opacity: 1;
   }
   to {
-    transform: translateY(118%);
-    opacity: 1;
-  }
-}
-
-@keyframes intro-silk-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes intro-bow-untie {
-  0% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  45% {
-    transform: translate(-50%, -46%) scale(1.06) rotate(-2deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -30%) scale(1.18) rotate(-5deg);
-    opacity: 0;
-  }
-}
-
-@keyframes intro-drape-l {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  25% {
-    transform: translate(-4%, 3%) rotate(-3deg);
-  }
-  100% {
-    transform: translate(-118%, 10%) rotate(-9deg);
-  }
-}
-
-@keyframes intro-drape-r {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  25% {
-    transform: translate(4%, 3%) rotate(3deg);
-  }
-  100% {
-    transform: translate(118%, 10%) rotate(9deg);
+    transform: translateY(115%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .intro-zoom,
+  .intro-venue,
   .intro-seal,
   .intro-flap-top,
-  .intro-env-body,
-  .intro-silk,
-  .intro-bow,
-  .intro-drape-l,
-  .intro-drape-r {
+  .intro-env-body {
     animation-duration: 1ms !important;
     animation-delay: 0ms !important;
   }
 }
+
 
 

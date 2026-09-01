@@ -2,9 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Countdown } from "@/components/Countdown";
-import { EnvelopeIntro } from "@/components/EnvelopeIntro";
+import { InvitationDoors } from "@/components/InvitationDoors";
 import { ScratchDate } from "@/components/ScratchDate";
 import venue from "@/assets/venue.jpg.asset.json";
+
 
 const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
 const DESCRIPTION =
@@ -39,7 +40,7 @@ function Index() {
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-champagne font-sans text-ink">
-      <EnvelopeIntro onFinished={() => setRevealed(true)} />
+      <InvitationDoors onOpened={() => setRevealed(true)} />
 
       <div
         className={`transition-opacity duration-1000 ease-out ${

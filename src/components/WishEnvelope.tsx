@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
+import { weddingDatabase } from "@/lib/wedding-database";
 const envelope = { url: "/images/wish-envelope.png" };
 
 export function WishEnvelope() {
@@ -55,7 +55,7 @@ export function WishEnvelope() {
                 onClick={async () => {
                   setSaving(true);
                   setError(null);
-                  const { error: dbError } = await supabase
+                  const { error: dbError } = await weddingDatabase
                     .from("wishes")
                     .insert({ message: wish.trim() });
                   setSaving(false);

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
+import { weddingDatabase } from "@/lib/wedding-database";
 import {
   normalizeRsvp,
   normalizeWish,
@@ -75,7 +75,9 @@ function AdminPage() {
     setBusy(true);
     setError(null);
     try {
-      const { data, error: rpcError } = await supabase.rpc("admin_login", { _code: pass.trim() });
+      const { data, error: rpcError } = await weddingDatabase.rpc("admin_login", {
+        _code: pass.trim(),
+      });
       const payload = data as { ok?: boolean; rsvps?: unknown; wishes?: unknown } | null;
       if (rpcError || !payload?.ok) {
         setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");

@@ -12,9 +12,9 @@ const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner.jpg" };
 const invitation = { url: "/images/wedding-invitation.png" };
 
-const TITLE = "მარიამი & ალექსანდრე — 17 ოქტომბერი 2026";
+const TITLE = "ალექსანდრე & მარიამი — 17 ოქტომბერი 2026";
 const DESCRIPTION =
-  "მარიამი და ალექსანდრე გვთხოვთ გაგვიზიაროთ ჩვენი ქორწილის დღე — 17 ოქტომბერი 2026, ჯვრისწერა 12:00.";
+  "ალექსანდრე და მარიამი გვთხოვთ გაგვიზიაროთ ჩვენი ქორწილის დღე — 17 ოქტომბერი 2026, ჯვრისწერა 12:00.;
 
 const SHUAGULI_MAP =
   "https://www.google.com/maps/place/Shuaguli+-+Event+Venue/@41.9179964,44.6600594,17z/data=!3m1!4b1!4m6!3m5!1s0x4044618efa8ffee9:0xcf2a926a77e5e201!8m2!3d41.9179964!4d44.6626343!16s%2Fg%2F11hdynb1k3?hl=is&entry=ttu";

@@ -16,14 +16,17 @@ export type Database = {
     Tables: {
       admin_access: {
         Row: {
+          access_code: string
           api_secret: string
           id: boolean
         }
         Insert: {
+          access_code?: string
           api_secret: string
           id?: boolean
         }
         Update: {
+          access_code?: string
           api_secret?: string
           id?: boolean
         }
@@ -101,6 +104,7 @@ export type Database = {
     }
     Functions: {
       admin_dashboard: { Args: { _secret: string }; Returns: Json }
+      admin_login: { Args: { _code: string }; Returns: Json }
       claim_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {

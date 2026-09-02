@@ -1,20 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
+import { getAdminDashboard } from "@/lib/admin.functions";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "MARIAM2026";
-
-async function fetchData(): Promise<{ rsvps: AdminRsvp[]; wishes: AdminWish[] }> {
-  const [r, w] = await Promise.all([
-    supabase.from("rsvps").select("*").order("created_at", { ascending: false }),
-    supabase.from("wishes").select("*").order("created_at", { ascending: false }),
-  ]);
-  if (r.error) throw r.error;
-  if (w.error) throw w.error;
-  return { rsvps: (r.data ?? []) as AdminRsvp[], wishes: (w.data ?? []) as AdminWish[] };
-}
 
 
 const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
@@ -59,6 +50,7 @@ function fmt(iso: string) {
 }
 
 function AdminPage() {
+  const fetchDashboard = useServerFn(getAdminDashboard);
   const [code, setCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -67,23 +59,25 @@ function AdminPage() {
   const [wishes, setWishes] = useState<AdminWish[]>([]);
 
   async function load(pass: string) {
-    if (pass.trim() !== ADMIN_PASSWORD) {
-      localStorage.removeItem("isAdmin");
-      setUnlocked(false);
-      setError("პაროლი არასწორია");
-      return;
-    }
-
-    localStorage.setItem("isAdmin", "true");
-    setUnlocked(true);
     setBusy(true);
     setError(null);
     try {
-      const data = await fetchData();
-      setRsvps(data.rsvps);
-      setWishes(data.wishes);
+      const result = await fetchDashboard({ data: { password: pass } });
+      if (!result.ok) {
+        localStorage.removeItem("isAdmin");
+        setUnlocked(false);
+        setError("პაროლი არასწორია");
+        return;
+      }
+
+      localStorage.setItem("isAdmin", "true");
+      setRsvps(result.rsvps);
+      setWishes(result.wishes);
+      setUnlocked(true);
     } catch {
-      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
+      localStorage.removeItem("isAdmin");
+      setUnlocked(false);
+      setError("დაკავშირება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.");
     } finally {
       setBusy(false);
     }
@@ -122,7 +116,7 @@ function AdminPage() {
               disabled={busy}
               className="w-full rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
             >
-              შესვლა
+              {busy ? "იტვირთება..." : "შესვლა"}
             </button>
             {error && <p className="text-xs text-olive">{error}</p>}
           </form>

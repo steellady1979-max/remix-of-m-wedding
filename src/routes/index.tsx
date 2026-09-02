@@ -85,9 +85,9 @@ function Index() {
           <div className="relative animate-fade-in rounded-xl bg-white/70 px-8 py-10 backdrop-blur-[2px]">
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">ჩვენი ქორწილი</p>
             <h1 className="mt-6 flex flex-col items-center gap-2 font-display text-3xl font-light leading-tight text-olive sm:text-5xl">
-              <span>მარიამი</span>
-              <span className="text-xl text-olive-soft sm:text-3xl">&</span>
               <span>ალექსანდრე</span>
+              <span className="text-xl text-olive-soft sm:text-3xl">&</span>
+              <span>მარიამი</span>
             </h1>
             <div className="hairline mx-auto mt-8 w-40" />
             <p className="mt-6 text-sm tracking-[0.3em] text-ink/70">17 · 10 · 2026</p>

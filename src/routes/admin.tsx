@@ -1,24 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
-type LoginPayload = { ok?: boolean; rsvps?: AdminRsvp[]; wishes?: AdminWish[] };
+const ADMIN_PASSWORD = "MARIAM2026";
 
-/** Direct REST call — no supabase-js schema cache, so it can't 404 on stale metadata. */
-async function verifyCode(code: string): Promise<LoginPayload> {
-  const url = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-  const key = import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined;
-  if (!url || !key) throw new Error("backend-not-configured");
-
-  const res = await fetch(`${url}/rest/v1/rpc/admin_login`, {
-    method: "POST",
-    headers: { apikey: key, "Content-Type": "application/json" },
-    body: JSON.stringify({ _code: code }),
-  });
-  if (!res.ok) throw new Error(`http-${res.status}`);
-  return (await res.json()) as LoginPayload;
+async function fetchData(): Promise<{ rsvps: AdminRsvp[]; wishes: AdminWish[] }> {
+  const [r, w] = await Promise.all([
+    supabase.from("rsvps").select("*").order("created_at", { ascending: false }),
+    supabase.from("wishes").select("*").order("created_at", { ascending: false }),
+  ]);
+  if (r.error) throw r.error;
+  if (w.error) throw w.error;
+  return { rsvps: (r.data ?? []) as AdminRsvp[], wishes: (w.data ?? []) as AdminWish[] };
 }
+
 
 const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";

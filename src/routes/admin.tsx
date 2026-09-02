@@ -1,24 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+import { supabase } from "@/integrations/supabase/client";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
-type LoginPayload = { ok?: boolean; rsvps?: AdminRsvp[]; wishes?: AdminWish[] };
+const ADMIN_PASSWORD = "MARIAM2026";
 
-/** Direct REST call — no supabase-js schema cache, so it can't 404 on stale metadata. */
-async function verifyCode(code: string): Promise<LoginPayload> {
-  const url = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-  const key = import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined;
-  if (!url || !key) throw new Error("backend-not-configured");
-
-  const res = await fetch(`${url}/rest/v1/rpc/admin_login`, {
-    method: "POST",
-    headers: { apikey: key, "Content-Type": "application/json" },
-    body: JSON.stringify({ _code: code }),
-  });
-  if (!res.ok) throw new Error(`http-${res.status}`);
-  return (await res.json()) as LoginPayload;
+async function fetchData(): Promise<{ rsvps: AdminRsvp[]; wishes: AdminWish[] }> {
+  const [r, w] = await Promise.all([
+    supabase.from("rsvps").select("*").order("created_at", { ascending: false }),
+    supabase.from("wishes").select("*").order("created_at", { ascending: false }),
+  ]);
+  if (r.error) throw r.error;
+  if (w.error) throw w.error;
+  return { rsvps: (r.data ?? []) as AdminRsvp[], wishes: (w.data ?? []) as AdminWish[] };
 }
+
 
 const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
@@ -70,41 +67,33 @@ function AdminPage() {
   const [wishes, setWishes] = useState<AdminWish[]>([]);
 
   async function load(pass: string) {
+    if (pass.trim() !== ADMIN_PASSWORD) {
+      localStorage.removeItem("isAdmin");
+      setUnlocked(false);
+      setError("პაროლი არასწორია");
+      return;
+    }
+
+    localStorage.setItem("isAdmin", "true");
+    setUnlocked(true);
     setBusy(true);
     setError(null);
     try {
-      const payload = await verifyCode(pass.trim());
-
-      if (!payload.ok) {
-        setUnlocked(false);
-        sessionStorage.removeItem("admin-pass");
-        setError("პაროლი არასწორია");
-        return;
-      }
-
-      setRsvps(payload.rsvps ?? []);
-      setWishes(payload.wishes ?? []);
-      setUnlocked(true);
-      sessionStorage.setItem("admin-pass", pass);
-    } catch (e) {
-      setUnlocked(false);
-      sessionStorage.removeItem("admin-pass");
-      const msg = e instanceof Error ? e.message : "";
-      setError(
-        msg === "backend-not-configured"
-          ? "ბაზა არ არის დაკონფიგურირებული (VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY)."
-          : "მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.",
-      );
+      const data = await fetchData();
+      setRsvps(data.rsvps);
+      setWishes(data.wishes);
+    } catch {
+      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
     } finally {
       setBusy(false);
     }
   }
 
   useEffect(() => {
-    const saved = sessionStorage.getItem("admin-pass");
-    if (saved) void load(saved);
+    if (localStorage.getItem("isAdmin") === "true") void load(ADMIN_PASSWORD);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   if (!unlocked) {
     return (
@@ -159,7 +148,7 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => {
-              sessionStorage.removeItem("admin-pass");
+              localStorage.removeItem("isAdmin");
               setUnlocked(false);
               setCode("");
             }}

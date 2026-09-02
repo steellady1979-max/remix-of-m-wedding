@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_access: {
+        Row: {
+          api_secret: string
+          id: boolean
+        }
+        Insert: {
+          api_secret: string
+          id?: boolean
+        }
+        Update: {
+          api_secret?: string
+          id?: boolean
+        }
+        Relationships: []
+      }
       rsvps: {
         Row: {
           attending: boolean
@@ -85,6 +100,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_dashboard: { Args: { _secret: string }; Returns: Json }
       claim_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {

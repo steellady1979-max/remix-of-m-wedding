@@ -75,6 +75,9 @@ function Index() {
           <img
             src={couple.url}
             alt="წყვილი საქორწილო სივრცის ხედის წინ"
+            width={900}
+            height={1993}
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/45 via-white/25 to-white/70" />
@@ -111,6 +114,9 @@ function Index() {
               src={invitation.url}
               alt="საქორწილო მოსაწვევი კონვერტთან და თეთრ ლილიასთან ერთად"
               loading="lazy"
+              decoding="async"
+              width={1000}
+              height={1410}
               className="w-full object-contain"
             />
           </Reveal>
@@ -136,6 +142,7 @@ function Index() {
                       src={item.image}
                       alt={item.alt ?? ""}
                       loading="lazy"
+                      decoding="async"
                       className="w-full rounded-lg border border-olive/15 object-cover"
                     />
                   )}

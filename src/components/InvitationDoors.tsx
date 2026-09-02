@@ -63,6 +63,9 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
         <img
           src={venue.url}
           alt="წყვილი საქორწილო სივრცის ხედის წინ"
+          width={900}
+          height={1993}
+          decoding="async"
           className={`h-full w-full object-cover transition-transform duration-[2600ms] ease-drape ${
             opening ? "scale-100" : "scale-110"
           }`}
@@ -108,8 +111,9 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
           <img
             src={bow}
             alt=""
-            width={1024}
-            height={1536}
+            width={800}
+            height={1193}
+            decoding="async"
             className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)]"
           />
         </div>

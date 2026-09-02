@@ -21,6 +21,10 @@ export function WishEnvelope() {
         <img
           src={envelope.url}
           alt="სურვილების კონვერტი — თეთრი კონვერტი მაქმანის ბაფთით"
+          loading="lazy"
+          decoding="async"
+          width={900}
+          height={1269}
           className={`w-full transition-transform duration-700 ease-drape ${
             open ? "-translate-y-2 rotate-[-1deg]" : ""
           }`}

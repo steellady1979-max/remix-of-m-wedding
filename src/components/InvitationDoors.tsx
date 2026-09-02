@@ -67,9 +67,10 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
           width={900}
           height={1993}
           decoding="async"
-          className={`h-full w-full object-cover transition-transform duration-[2600ms] ease-drape ${
+          className={`h-full w-full object-cover object-center transition-transform duration-[2600ms] ease-drape lg:object-top ${
             opening ? "scale-100" : "scale-110"
           }`}
+
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-ink/25" />
       </div>

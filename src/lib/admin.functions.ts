@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
-const DEFAULT_ADMIN_PASSWORD = "MARIAM2026";
+const ADMIN_PASSWORD = "MARIAM2026";
 
 function matchesPassword(input: string, expected: string) {
   const inputHash = createHash("sha256").update(input, "utf8").digest();
@@ -15,10 +15,7 @@ function matchesPassword(input: string, expected: string) {
 export const getAdminDashboard = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ password: z.string().min(1) }).parse(input))
   .handler(async ({ data }) => {
-    const configuredPassword = process.env["ADMIN_ACCESS_CODE"]?.trim();
-    const expectedPassword = configuredPassword || DEFAULT_ADMIN_PASSWORD;
-
-    if (!matchesPassword(data.password.trim(), expectedPassword)) {
+    if (!matchesPassword(data.password.trim(), ADMIN_PASSWORD)) {
       return { ok: false as const, reason: "invalid_password" as const };
     }
 

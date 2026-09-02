@@ -3,6 +3,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useLocation,
   useRouter,
   HeadContent,
   Scripts,
@@ -93,17 +94,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      // Intro assets: fetched before first paint so the envelope never flashes empty on mobile.
-      {
-        rel: "preload",
-        as: "font",
-        type: "font/ttf",
-        href: "/fonts/galaktioni.ttf",
-        crossOrigin: "anonymous",
-      },
-      { rel: "preload", as: "image", href: "/images/door-panel-white.jpg" },
-      { rel: "preload", as: "image", href: "/images/chiffon-bow-olive.png" },
-      { rel: "preload", as: "image", href: "/images/couple.jpg" },
     ],
   }),
   shellComponent: RootShell,
@@ -128,10 +118,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isAdmin = location.pathname === "/admin";
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BackgroundMusic />
+      {!isAdmin && <BackgroundMusic />}
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>

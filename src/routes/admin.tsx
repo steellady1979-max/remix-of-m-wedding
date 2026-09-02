@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
-import { getAdminDashboard } from "@/lib/admin.functions";
+import { supabase } from "@/integrations/supabase/client";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "MARIAM2026";

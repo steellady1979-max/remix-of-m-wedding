@@ -35,7 +35,8 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 select-none overflow-hidden bg-white"
+      className="fixed inset-0 z-50 cursor-pointer select-none overflow-hidden bg-white"
+
       role="button"
       tabIndex={0}
       aria-label="გახსენი მოსაწვევი"
@@ -66,9 +67,10 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
           width={900}
           height={1993}
           decoding="async"
-          className={`h-full w-full object-cover transition-transform duration-[2600ms] ease-drape ${
+          className={`h-full w-full object-cover object-center transition-transform duration-[2600ms] ease-drape lg:object-top ${
             opening ? "scale-100" : "scale-110"
           }`}
+
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-ink/25" />
       </div>
@@ -114,7 +116,7 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
             width={800}
             height={1193}
             decoding="async"
-            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)]"
+            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)] lg:w-[26vw] lg:max-w-[400px]"
           />
         </div>
       </div>

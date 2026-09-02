@@ -2,7 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
+import {
+  normalizeRsvp,
+  normalizeWish,
+  type AdminRsvp,
+  type AdminWish,
+} from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "MARIAM2026";
 

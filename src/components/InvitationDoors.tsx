@@ -116,7 +116,7 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
             width={800}
             height={1193}
             decoding="async"
-            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)]"
+            className="w-[62vw] max-w-[340px] drop-shadow-[0_18px_36px_rgba(90,100,60,0.28)] lg:w-[26vw] lg:max-w-[400px]"
           />
         </div>
       </div>

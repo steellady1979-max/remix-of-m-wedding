@@ -115,7 +115,7 @@ function Index() {
             </h2>
           </Reveal>
           <Reveal delay={120} className="w-full max-w-md lg:max-w-xl">
-            <Countdown target="2026-10-17T12:00:00+04:00" />
+            <Countdown target="2026-10-17T14:00:00+04:00" />
           </Reveal>
         </section>
 

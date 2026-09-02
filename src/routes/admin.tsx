@@ -59,25 +59,26 @@ function AdminPage() {
   const [wishes, setWishes] = useState<AdminWish[]>([]);
 
   async function load(pass: string) {
+    // Password check is 100% local — no database, RPC, or network call involved.
+    if (pass.trim() !== ADMIN_PASSWORD) {
+      localStorage.removeItem("isAdmin");
+      setUnlocked(false);
+      setError("პაროლი არასწორია");
+      return;
+    }
+
+    localStorage.setItem("isAdmin", "true");
+    setUnlocked(true);
     setBusy(true);
     setError(null);
     try {
       const result = await fetchDashboard({ data: { password: pass } });
-      if (!result.ok) {
-        localStorage.removeItem("isAdmin");
-        setUnlocked(false);
-        setError("პაროლი არასწორია");
-        return;
+      if (result.ok) {
+        setRsvps(result.rsvps);
+        setWishes(result.wishes);
       }
-
-      localStorage.setItem("isAdmin", "true");
-      setRsvps(result.rsvps);
-      setWishes(result.wishes);
-      setUnlocked(true);
     } catch {
-      localStorage.removeItem("isAdmin");
-      setUnlocked(false);
-      setError("დაკავშირება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.");
+      setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
     } finally {
       setBusy(false);
     }

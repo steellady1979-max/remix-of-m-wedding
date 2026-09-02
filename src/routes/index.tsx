@@ -10,7 +10,7 @@ const couple = { url: "/images/couple.jpg" };
 const church = { url: "/images/church.jpg" };
 const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner.jpg" };
-const invitation = { url: "/images/wedding-invitation.png" };
+const invitation = { url: "/images/wedding-invitation.jpg" };
 
 const TITLE = "ალექსანდრე & მარიამი — 17 ოქტომბერი 2026";
 const DESCRIPTION =

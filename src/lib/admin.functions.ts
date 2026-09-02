@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-
-const ACCESS_CODE = "MARIAM2026";
+import { createClient } from "@supabase/supabase-js";
 
 export type AdminRsvp = {
   id: string;
@@ -16,17 +15,35 @@ export type AdminWish = { id: string; message: string; created_at: string };
 export const getAdminData = createServerFn({ method: "POST" })
   .inputValidator((input: { code: string }) => ({ code: String(input?.code ?? "") }))
   .handler(async ({ data }): Promise<{ rsvps: AdminRsvp[]; wishes: AdminWish[] }> => {
-    if (data.code.trim() !== ACCESS_CODE) {
+    const expectedCode = process.env["ADMIN_ACCESS_CODE"] ?? "MARIAM2026";
+    if (data.code.trim() !== expectedCode.trim()) {
       throw new Error("INVALID_CODE");
     }
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const [r, w] = await Promise.all([
-      supabaseAdmin.from("rsvps").select("*").order("created_at", { ascending: false }),
-      supabaseAdmin.from("wishes").select("*").order("created_at", { ascending: false }),
-    ]);
-    if (r.error || w.error) throw new Error("LOAD_FAILED");
-    return {
-      rsvps: (r.data ?? []) as AdminRsvp[],
-      wishes: (w.data ?? []) as AdminWish[],
-    };
+
+    const url = process.env["SUPABASE_URL"];
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
+    const dbSecret = process.env["ADMIN_DB_SECRET"];
+    if (!url || !key || !dbSecret) throw new Error("MISCONFIGURED");
+
+    const supabase = createClient(url, key, {
+      auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+      global: {
+        fetch: (input, init) => {
+          const h = new Headers(init?.headers);
+          if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) {
+            h.delete("Authorization");
+          }
+          h.set("apikey", key);
+          return fetch(input, { ...init, headers: h });
+        },
+      },
+    });
+
+    const { data: result, error } = await supabase.rpc("admin_dashboard", {
+      _secret: dbSecret,
+    });
+    if (error) throw new Error("LOAD_FAILED");
+
+    const payload = (result ?? {}) as { rsvps?: AdminRsvp[]; wishes?: AdminWish[] };
+    return { rsvps: payload.rsvps ?? [], wishes: payload.wishes ?? [] };
   });

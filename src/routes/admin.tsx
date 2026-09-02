@@ -1,8 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
+
+type LoginPayload = { ok?: boolean; rsvps?: AdminRsvp[]; wishes?: AdminWish[] };
+
+/** Direct REST call — no supabase-js schema cache, so it can't 404 on stale metadata. */
+async function verifyCode(code: string): Promise<LoginPayload> {
+  const url = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
+  const key = import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined;
+  if (!url || !key) throw new Error("backend-not-configured");
+
+  const res = await fetch(`${url}/rest/v1/rpc/admin_login`, {
+    method: "POST",
+    headers: { apikey: key, "Content-Type": "application/json" },
+    body: JSON.stringify({ _code: code }),
+  });
+  if (!res.ok) throw new Error(`http-${res.status}`);
+  return (await res.json()) as LoginPayload;
+}
 
 const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
@@ -57,16 +73,7 @@ function AdminPage() {
     setBusy(true);
     setError(null);
     try {
-      const { data, error: rpcError } = await supabase.rpc("admin_login", {
-        _code: pass.trim(),
-      });
-      if (rpcError) throw rpcError;
-
-      const payload = (data ?? {}) as {
-        ok?: boolean;
-        rsvps?: AdminRsvp[];
-        wishes?: AdminWish[];
-      };
+      const payload = await verifyCode(pass.trim());
 
       if (!payload.ok) {
         setUnlocked(false);
@@ -79,9 +86,15 @@ function AdminPage() {
       setWishes(payload.wishes ?? []);
       setUnlocked(true);
       sessionStorage.setItem("admin-pass", pass);
-    } catch {
+    } catch (e) {
       setUnlocked(false);
-      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
+      sessionStorage.removeItem("admin-pass");
+      const msg = e instanceof Error ? e.message : "";
+      setError(
+        msg === "backend-not-configured"
+          ? "ბაზა არ არის დაკონფიგურირებული (VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY)."
+          : "მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.",
+      );
     } finally {
       setBusy(false);
     }

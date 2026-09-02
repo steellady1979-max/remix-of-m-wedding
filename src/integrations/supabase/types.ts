@@ -103,9 +103,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      admin_dashboard: { Args: { _secret: string }; Returns: Json }
       admin_login: { Args: { _code: string }; Returns: Json }
-      claim_admin: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

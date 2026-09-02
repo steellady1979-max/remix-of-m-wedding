@@ -67,41 +67,33 @@ function AdminPage() {
   const [wishes, setWishes] = useState<AdminWish[]>([]);
 
   async function load(pass: string) {
+    if (pass.trim() !== ADMIN_PASSWORD) {
+      localStorage.removeItem("isAdmin");
+      setUnlocked(false);
+      setError("პაროლი არასწორია");
+      return;
+    }
+
+    localStorage.setItem("isAdmin", "true");
+    setUnlocked(true);
     setBusy(true);
     setError(null);
     try {
-      const payload = await verifyCode(pass.trim());
-
-      if (!payload.ok) {
-        setUnlocked(false);
-        sessionStorage.removeItem("admin-pass");
-        setError("პაროლი არასწორია");
-        return;
-      }
-
-      setRsvps(payload.rsvps ?? []);
-      setWishes(payload.wishes ?? []);
-      setUnlocked(true);
-      sessionStorage.setItem("admin-pass", pass);
-    } catch (e) {
-      setUnlocked(false);
-      sessionStorage.removeItem("admin-pass");
-      const msg = e instanceof Error ? e.message : "";
-      setError(
-        msg === "backend-not-configured"
-          ? "ბაზა არ არის დაკონფიგურირებული (VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY)."
-          : "მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.",
-      );
+      const data = await fetchData();
+      setRsvps(data.rsvps);
+      setWishes(data.wishes);
+    } catch {
+      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
     } finally {
       setBusy(false);
     }
   }
 
   useEffect(() => {
-    const saved = sessionStorage.getItem("admin-pass");
-    if (saved) void load(saved);
+    if (localStorage.getItem("isAdmin") === "true") void load(ADMIN_PASSWORD);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   if (!unlocked) {
     return (

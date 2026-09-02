@@ -35,7 +35,8 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 select-none overflow-hidden bg-white"
+      className="fixed inset-0 z-50 cursor-pointer select-none overflow-hidden bg-white"
+
       role="button"
       tabIndex={0}
       aria-label="გახსენი მოსაწვევი"

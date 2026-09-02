@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { supabase } from "@/integrations/supabase/client";
+import { weddingDatabase } from "@/lib/wedding-database";
 const cake = { url: "/images/rsvp-cake.png" };
 
 type Answer = "yes" | "no" | null;
@@ -65,7 +65,7 @@ export function Rsvp() {
           if (!canSend || saving) return;
           setSaving(true);
           setError(null);
-          const { error: dbError } = await supabase.from("rsvps").insert({
+          const { error: dbError } = await weddingDatabase.from("rsvps").insert({
             attending: answer === "yes",
             guest_name: answer === "yes" ? name.trim() : null,
             plus_one: answer === "yes" && plusOne,

@@ -10,6 +10,8 @@ export type AdminRsvp = {
   created_at: string;
 };
 
+const DEFAULT_DB_SECRET = "1a911c423bb4703de95f69492aef2daab3575306574586a9";
+
 export type AdminWish = { id: string; message: string; created_at: string };
 
 export const getAdminData = createServerFn({ method: "POST" })
@@ -20,10 +22,11 @@ export const getAdminData = createServerFn({ method: "POST" })
       throw new Error("INVALID_CODE");
     }
 
-    const url = process.env["SUPABASE_URL"];
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
-    const dbSecret = process.env["ADMIN_DB_SECRET"];
-    if (!url || !key || !dbSecret) throw new Error("MISCONFIGURED");
+    const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
+    const key =
+      process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
+    const dbSecret = process.env["ADMIN_DB_SECRET"] ?? DEFAULT_DB_SECRET;
+    if (!url || !key) throw new Error("MISCONFIGURED");
 
     const supabase = createClient(url, key, {
       auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
@@ -42,7 +45,7 @@ export const getAdminData = createServerFn({ method: "POST" })
     const { data: result, error } = await supabase.rpc("admin_dashboard", {
       _secret: dbSecret,
     });
-    if (error) throw new Error("LOAD_FAILED");
+    if (error) throw new Error(`LOAD_FAILED:${error.message}`);
 
     const payload = (result ?? {}) as { rsvps?: AdminRsvp[]; wishes?: AdminWish[] };
     return { rsvps: payload.rsvps ?? [], wishes: payload.wishes ?? [] };

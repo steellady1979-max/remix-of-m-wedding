@@ -16,6 +16,9 @@ function Card({ children }: { children: React.ReactNode }) {
           src={cake.url}
           alt="თეთრი საქორწილო ტორტი"
           loading="lazy"
+          decoding="async"
+          width={750}
+          height={1057}
           className="h-72 w-auto object-contain mix-blend-multiply sm:h-80"
         />
       </div>

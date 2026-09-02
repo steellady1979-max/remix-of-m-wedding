@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { getAdminData, type AdminRsvp, type AdminWish } from "@/lib/admin.functions";
 
-const TITLE = "ადმინ პანელი — მარიამი & ალექსანდრე";
+const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 export const Route = createFileRoute("/admin")({
@@ -126,7 +126,7 @@ function AdminPage() {
         <header className="text-center">
           <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინ პანელი</p>
           <h1 className="mt-4 font-display text-3xl font-light text-olive">
-            მარიამი & ალექსანდრე
+            ალექსანდრე & მარიამი
           </h1>
           <div className="hairline mx-auto mt-6 w-32" />
           <button

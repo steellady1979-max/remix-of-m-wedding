@@ -11,11 +11,12 @@ export function WishEnvelope() {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <div className="flex w-full max-w-md flex-col items-center gap-6">
+    <div className="flex w-full max-w-md flex-col items-center gap-6 lg:max-w-lg">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="group relative w-[70vw] max-w-[320px] transition-transform duration-500 hover:scale-[1.03]"
+        className="group relative w-[70vw] max-w-[320px] cursor-pointer transition-transform duration-500 hover:scale-[1.03] lg:w-[340px] lg:max-w-none"
+
         aria-expanded={open}
       >
         <img

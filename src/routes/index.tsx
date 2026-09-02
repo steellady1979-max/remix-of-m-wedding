@@ -14,14 +14,14 @@ const invitation = { url: "/images/wedding-invitation.jpg" };
 
 const TITLE = "ალექსანდრე & მარიამი — 17 ოქტომბერი 2026";
 const DESCRIPTION =
-  "ალექსანდრე და მარიამი გვთხოვთ გაგვიზიაროთ ჩვენი ქორწილის დღე — 17 ოქტომბერი 2026, ჯვრისწერა 12:00."
+  "ალექსანდრე და მარიამი გვთხოვთ გაგვიზიაროთ ჩვენი ქორწილის დღე — 17 ოქტომბერი 2026, ჯვრისწერა 14:00."
 
 const SHUAGULI_MAP =
   "https://www.google.com/maps/place/Shuaguli+-+Event+Venue/@41.9179964,44.6600594,17z/data=!3m1!4b1!4m6!3m5!1s0x4044618efa8ffee9:0xcf2a926a77e5e201!8m2!3d41.9179964!4d44.6626343!16s%2Fg%2F11hdynb1k3?hl=is&entry=ttu";
 
 const SCHEDULE = [
   {
-    time: "12:00",
+    time: "14:00",
     title: "ჯვრისწერა",
     href: "https://maps.app.goo.gl/BMZYm7LTAfFjGm7FA?g_st=ic",
     image: church.url,
@@ -115,7 +115,7 @@ function Index() {
             </h2>
           </Reveal>
           <Reveal delay={120} className="w-full max-w-md lg:max-w-xl">
-            <Countdown target="2026-10-17T12:00:00+04:00" />
+            <Countdown target="2026-10-17T14:00:00+04:00" />
           </Reveal>
         </section>
 

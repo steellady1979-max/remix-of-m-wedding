@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
-import { getAdminData, type AdminRsvp, type AdminWish } from "@/lib/admin.functions";
+import { supabase } from "@/integrations/supabase/client";
+import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
 const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
@@ -46,8 +46,6 @@ function fmt(iso: string) {
 }
 
 function AdminPage() {
-  const fetchData = useServerFn(getAdminData);
-
   const [code, setCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -59,15 +57,31 @@ function AdminPage() {
     setBusy(true);
     setError(null);
     try {
-      const res = await fetchData({ data: { code: pass } });
-      setRsvps(res.rsvps);
-      setWishes(res.wishes);
+      const { data, error: rpcError } = await supabase.rpc("admin_login", {
+        _code: pass.trim(),
+      });
+      if (rpcError) throw rpcError;
+
+      const payload = (data ?? {}) as {
+        ok?: boolean;
+        rsvps?: AdminRsvp[];
+        wishes?: AdminWish[];
+      };
+
+      if (!payload.ok) {
+        setUnlocked(false);
+        sessionStorage.removeItem("admin-pass");
+        setError("პაროლი არასწორია");
+        return;
+      }
+
+      setRsvps(payload.rsvps ?? []);
+      setWishes(payload.wishes ?? []);
       setUnlocked(true);
       sessionStorage.setItem("admin-pass", pass);
     } catch {
       setUnlocked(false);
-      sessionStorage.removeItem("admin-pass");
-      setError("პაროლი არასწორია");
+      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
     } finally {
       setBusy(false);
     }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { getAdminData, type AdminRsvp, type AdminWish } from "@/lib/admin.functions";
 
-const TITLE = "ადმინ პანელი — მარიამი & ალექსანდრე";
+const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 export const Route = createFileRoute("/admin")({

@@ -49,7 +49,6 @@ function fmt(iso: string) {
 }
 
 function AdminPage() {
-  const fetchDashboard = useServerFn(getAdminDashboard);
   const [code, setCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [busy, setBusy] = useState(false);

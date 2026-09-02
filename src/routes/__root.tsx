@@ -93,17 +93,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      // Intro assets: fetched before first paint so the envelope never flashes empty on mobile.
-      {
-        rel: "preload",
-        as: "font",
-        type: "font/ttf",
-        href: "/fonts/galaktioni.ttf",
-        crossOrigin: "anonymous",
-      },
-      { rel: "preload", as: "image", href: "/images/door-panel-white.jpg" },
-      { rel: "preload", as: "image", href: "/images/chiffon-bow-olive.png" },
-      { rel: "preload", as: "image", href: "/images/couple.jpg" },
     ],
   }),
   shellComponent: RootShell,

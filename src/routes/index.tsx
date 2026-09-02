@@ -54,6 +54,18 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/ttf",
+        href: "/fonts/galaktioni.ttf",
+        crossOrigin: "anonymous",
+      },
+      { rel: "preload", as: "image", href: "/images/door-panel-white.jpg" },
+      { rel: "preload", as: "image", href: "/images/chiffon-bow-olive.png" },
+      { rel: "preload", as: "image", href: "/images/couple.jpg" },
+    ],
   }),
   component: Index,
 });

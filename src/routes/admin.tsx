@@ -73,16 +73,7 @@ function AdminPage() {
     setBusy(true);
     setError(null);
     try {
-      const { data, error: rpcError } = await supabase.rpc("admin_login", {
-        _code: pass.trim(),
-      });
-      if (rpcError) throw rpcError;
-
-      const payload = (data ?? {}) as {
-        ok?: boolean;
-        rsvps?: AdminRsvp[];
-        wishes?: AdminWish[];
-      };
+      const payload = await verifyCode(pass.trim());
 
       if (!payload.ok) {
         setUnlocked(false);

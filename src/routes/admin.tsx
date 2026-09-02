@@ -148,7 +148,7 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => {
-              sessionStorage.removeItem("admin-pass");
+              localStorage.removeItem("isAdmin");
               setUnlocked(false);
               setCode("");
             }}

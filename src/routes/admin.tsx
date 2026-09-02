@@ -2,7 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
+import {
+  normalizeRsvp,
+  normalizeWish,
+  type AdminRsvp,
+  type AdminWish,
+} from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "MARIAM2026";
 
@@ -71,15 +76,19 @@ function AdminPage() {
     setError(null);
     try {
       const { data, error: rpcError } = await supabase.rpc("admin_login", { _code: pass.trim() });
-      const payload = data as
-        | { ok: boolean; rsvps?: AdminRsvp[]; wishes?: AdminWish[] }
-        | null;
+      const payload = data as { ok?: boolean; rsvps?: unknown; wishes?: unknown } | null;
       if (rpcError || !payload?.ok) {
         setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
         return;
       }
-      setRsvps(payload.rsvps ?? []);
-      setWishes(payload.wishes ?? []);
+      const rsvpRows: AdminRsvp[] = (Array.isArray(payload.rsvps) ? payload.rsvps : [])
+        .map(normalizeRsvp)
+        .filter((r): r is AdminRsvp => r !== null);
+      const wishRows: AdminWish[] = (Array.isArray(payload.wishes) ? payload.wishes : [])
+        .map(normalizeWish)
+        .filter((w): w is AdminWish => w !== null);
+      setRsvps(rsvpRows);
+      setWishes(wishRows);
     } catch {
       setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
     } finally {

@@ -185,7 +185,7 @@ function Index() {
 
 
         <footer className="bg-olive px-6 py-12 text-center">
-          <p className="font-display text-lg font-light text-white">მარიამი & ალექსანდრე</p>
+          <p className="font-display text-lg font-light text-white">ალექსანდრე & მარიამი</p>
           <p className="mt-2 text-[0.7rem] tracking-[0.35em] text-white/70">17 ოქტომბერი 2026</p>
         </footer>
       </div>

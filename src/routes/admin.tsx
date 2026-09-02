@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
-import { getAdminDashboard } from "@/lib/admin.functions";
+import { supabase } from "@/integrations/supabase/client";
 import type { AdminRsvp, AdminWish } from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "MARIAM2026";
@@ -50,7 +49,6 @@ function fmt(iso: string) {
 }
 
 function AdminPage() {
-  const fetchDashboard = useServerFn(getAdminDashboard);
   const [code, setCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -72,11 +70,16 @@ function AdminPage() {
     setBusy(true);
     setError(null);
     try {
-      const result = await fetchDashboard({ data: { password: pass } });
-      if (result.ok) {
-        setRsvps(result.rsvps);
-        setWishes(result.wishes);
+      const { data, error: rpcError } = await supabase.rpc("admin_login", { _code: pass.trim() });
+      const payload = data as
+        | { ok: boolean; rsvps?: AdminRsvp[]; wishes?: AdminWish[] }
+        | null;
+      if (rpcError || !payload?.ok) {
+        setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
+        return;
       }
+      setRsvps(payload.rsvps ?? []);
+      setWishes(payload.wishes ?? []);
     } catch {
       setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
     } finally {

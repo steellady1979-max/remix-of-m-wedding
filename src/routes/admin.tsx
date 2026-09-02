@@ -86,9 +86,15 @@ function AdminPage() {
       setWishes(payload.wishes ?? []);
       setUnlocked(true);
       sessionStorage.setItem("admin-pass", pass);
-    } catch {
+    } catch (e) {
       setUnlocked(false);
-      setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
+      sessionStorage.removeItem("admin-pass");
+      const msg = e instanceof Error ? e.message : "";
+      setError(
+        msg === "backend-not-configured"
+          ? "ბაზა არ არის დაკონფიგურირებული (VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY)."
+          : "მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.",
+      );
     } finally {
       setBusy(false);
     }

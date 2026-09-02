@@ -21,7 +21,7 @@ const SHUAGULI_MAP =
 
 const SCHEDULE = [
   {
-    time: "12:00",
+    time: "14:00",
     title: "ჯვრისწერა",
     href: "https://maps.app.goo.gl/BMZYm7LTAfFjGm7FA?g_st=ic",
     image: church.url,

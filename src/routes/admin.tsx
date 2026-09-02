@@ -64,10 +64,17 @@ function AdminPage() {
       setWishes(res.wishes);
       setUnlocked(true);
       sessionStorage.setItem("admin-pass", pass);
-    } catch {
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
       setUnlocked(false);
-      sessionStorage.removeItem("admin-pass");
-      setError("პაროლი არასწორია");
+      if (msg.includes("INVALID_CODE")) {
+        sessionStorage.removeItem("admin-pass");
+        setError("პაროლი არასწორია");
+      } else if (msg.includes("MISCONFIGURED")) {
+        setError("სერვერის კონფიგურაცია არასრულია — მიმართე დეველოპერს.");
+      } else {
+        setError("მონაცემები ვერ ჩაიტვირთა. სცადე ხელახლა.");
+      }
     } finally {
       setBusy(false);
     }

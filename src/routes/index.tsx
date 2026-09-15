@@ -142,7 +142,7 @@ function Index() {
         </section>
 
         {/* Invitation card */}
-        <section className="flex flex-col items-center bg-white px-6 py-20 lg:py-28">
+        <section className="paper flex flex-col items-center bg-white px-6 py-20 lg:py-28">
           <Reveal className="w-full max-w-md lg:max-w-lg">
             <img
               src={invitation.url}
@@ -151,13 +151,16 @@ function Index() {
               decoding="async"
               width={1024}
               height={1444}
-              className="mx-auto h-auto w-full object-contain"
+              className="photo-frame mx-auto"
             />
           </Reveal>
+          <div className="botanical mt-16 w-full max-w-md" aria-hidden="true">
+            <span className="text-base leading-none">✦</span>
+          </div>
         </section>
 
         {/* Schedule */}
-        <section className="flex flex-col items-center gap-10 bg-white px-6 py-24 lg:gap-16 lg:py-32">
+        <section className="flex flex-col items-center gap-10 bg-olive-mist px-6 py-24 lg:gap-16 lg:py-32">
           <Reveal>
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">დღის განრიგი</p>
           </Reveal>
@@ -182,7 +185,7 @@ function Index() {
                       decoding="async"
                       width={item.image === church.url ? 1024 : item.image === ceremony.url ? 768 : 896}
                       height={item.image === church.url ? 576 : item.image === ceremony.url ? 1376 : 1195}
-                      className="h-auto w-full rounded-lg border border-olive/15 object-contain"
+                      className="photo-frame"
                     />
                   )}
 
@@ -201,6 +204,7 @@ function Index() {
             ))}
           </ul>
         </section>
+
 
         {/* Dress code */}
         <section className="bg-olive-mist px-6 py-24 text-center lg:py-32">

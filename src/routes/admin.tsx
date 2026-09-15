@@ -12,7 +12,7 @@ import {
 const ADMIN_PASSWORD = "MARIAM2026";
 
 
-const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
+const TITLE = "ადმინ პანელი — გოგა & ლიკა";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 export const Route = createFileRoute("/admin")({
@@ -23,9 +23,11 @@ export const Route = createFileRoute("/admin")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/admin" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "/admin" }],
   }),
   component: AdminPage,
 });
@@ -151,7 +153,7 @@ function AdminPage() {
         <header className="text-center">
           <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინ პანელი</p>
           <h1 className="mt-4 font-display text-3xl font-light text-olive">
-            ალექსანდრე & მარიამი
+            გოგა & ლიკა
           </h1>
           <div className="hairline mx-auto mt-6 w-32" />
           <button

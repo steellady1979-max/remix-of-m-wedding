@@ -11,13 +11,17 @@ const UNMOUNT_AFTER = 2900;
 
 type Phase = "closed" | "opening" | "gone";
 
-export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
+export function InvitationDoors({ onOpened, onOpening }: { onOpened?: () => void; onOpening?: () => void }) {
   const [phase, setPhase] = useState<Phase>("closed");
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const openingStarted = useRef(false);
 
   const open = useCallback(() => {
-    setPhase((p) => (p === "closed" ? "opening" : p));
-  }, []);
+    if (openingStarted.current) return;
+    openingStarted.current = true;
+    onOpening?.();
+    setPhase("opening");
+  }, [onOpening]);
 
 
   useEffect(() => {

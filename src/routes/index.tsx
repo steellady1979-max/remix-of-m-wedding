@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Countdown } from "@/components/Countdown";
 import { InvitationDoors } from "@/components/InvitationDoors";
@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { Rsvp } from "@/components/Rsvp";
 import { RosePetals } from "@/components/RosePetals";
 import { WishEnvelope } from "@/components/WishEnvelope";
+import { WeddingMusic, type WeddingMusicHandle } from "@/components/WeddingMusic";
 const couple = { url: "/images/goga-lika-venue.webp" };
 const church = { url: "/images/sajvaros-church.webp" };
 const ceremony = { url: "/images/ceremony.jpg" };
@@ -103,10 +104,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [revealed, setRevealed] = useState(false);
+  const music = useRef<WeddingMusicHandle>(null);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-champagne font-sans text-ink">
-      <InvitationDoors onOpened={() => setRevealed(true)} />
+      <WeddingMusic ref={music} visible={revealed} />
+      <InvitationDoors onOpening={() => music.current?.play()} onOpened={() => setRevealed(true)} />
       {revealed && <RosePetals />}
 
       <div

@@ -3,7 +3,6 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
-  useLocation,
   useRouter,
   HeadContent,
   Scripts,
@@ -12,7 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { BackgroundMusic } from "../components/BackgroundMusic";
 
 function NotFoundComponent() {
   return (
@@ -118,12 +116,9 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const location = useLocation();
-  const isAdmin = location.pathname === "/admin";
 
   return (
     <QueryClientProvider client={queryClient}>
-      {!isAdmin && <BackgroundMusic />}
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>

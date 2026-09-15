@@ -9,7 +9,7 @@ import {
   type AdminWish,
 } from "@/lib/admin.types";
 
-const ADMIN_PASSWORD = "MARIAM2026";
+const ADMIN_PASSWORD = "GOGALIKA22";
 
 
 const TITLE = "ადმინ პანელი — გოგა & ლიკა";

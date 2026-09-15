@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const doorPanel = "/images/door-panel-white.jpg";
 const bow = "/images/chiffon-bow-olive.png";
-const venue = { url: "/images/couple.jpg" };
+const venue = { url: "/images/goga-lika-venue.webp" };
 
 /** Timings, matched to the CSS transitions below. */
 const BOW_RELEASE = 520;
@@ -59,13 +59,13 @@ export function InvitationDoors({ onOpened }: { onOpened?: () => void }) {
         touchStart.current = null;
       }}
     >
-      {/* The reveal: watercolour venue behind the doors, easing forward as they part */}
+      {/* The reveal image behind the doors, easing forward as they part */}
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={venue.url}
-          alt="წყვილი საქორწილო სივრცის ხედის წინ"
-          width={900}
-          height={1993}
+          alt="დადიანების სასახლის აკვარელის ხედი"
+          width={1024}
+          height={610}
           decoding="async"
           className={`h-full w-full object-cover object-center transition-transform duration-[2600ms] ease-drape lg:object-top ${
             opening ? "scale-100" : "scale-110"

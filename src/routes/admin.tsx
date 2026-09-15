@@ -12,7 +12,7 @@ import {
 const ADMIN_PASSWORD = "MARIAM2026";
 
 
-const TITLE = "ადმინ პანელი — ალექსანდრე & მარიამი";
+const TITLE = "ადმინ პანელი — გოგა & ლიკა";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
 
 export const Route = createFileRoute("/admin")({
@@ -151,7 +151,7 @@ function AdminPage() {
         <header className="text-center">
           <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინ პანელი</p>
           <h1 className="mt-4 font-display text-3xl font-light text-olive">
-            ალექსანდრე & მარიამი
+            გოგა & ლიკა
           </h1>
           <div className="hairline mx-auto mt-6 w-32" />
           <button

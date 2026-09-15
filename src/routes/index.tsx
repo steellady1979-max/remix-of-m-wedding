@@ -11,9 +11,7 @@ const church = { url: "/images/sajvaros-church.webp" };
 const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner-table.webp" };
 const cakeCutting = { url: "/images/cake-cutting-icon.webp" };
-const invitation = { url: "/images/wedding-invitation-new.webp" };
-const dressCode = { url: "/images/dress-code.webp" };
-const preWishes = { url: "/images/rsvp-couple.webp" };
+const invitation = { url: "/images/countdown-invitation.webp" };
 
 const TITLE = "გოგა & ლიკა — 22 სექტემბერი 2026";
 const DESCRIPTION =
@@ -221,19 +219,8 @@ function Index() {
 
         {/* Dress code */}
         <section className="paper bg-white px-6 py-24 text-center lg:py-32">
-          <div className="mx-auto grid w-full max-w-5xl items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-            <Reveal className="w-full">
-              <img
-                src={dressCode.url}
-                alt="პასტელურ ფერებში გამოწყობილი სტუმრების აკვარელის ნახატი"
-                loading="lazy"
-                decoding="async"
-                width={1024}
-                height={673}
-                className="photo-frame"
-              />
-            </Reveal>
-            <Reveal delay={120} className="flex flex-col items-center">
+          <div className="mx-auto w-full max-w-xl">
+            <Reveal className="flex flex-col items-center">
               <h2 className="font-display text-3xl font-light text-olive sm:text-4xl lg:text-5xl">
                 დრესკოდი
               </h2>
@@ -255,21 +242,6 @@ function Index() {
         <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center lg:py-32">
           <Reveal className="flex w-full max-w-md justify-center lg:max-w-lg">
             <Rsvp />
-          </Reveal>
-        </section>
-
-        {/* Photograph before wishes */}
-        <section className="paper flex justify-center bg-white px-6 py-20 lg:py-28">
-          <Reveal className="w-full max-w-md lg:max-w-lg">
-            <img
-              src={preWishes.url}
-               alt="გოგა და ლიკა საღამოს ტერასაზე წითელი ვარდების თაიგულით"
-              loading="lazy"
-              decoding="async"
-               width={674}
-               height={900}
-              className="photo-frame"
-            />
           </Reveal>
         </section>
 

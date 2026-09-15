@@ -30,8 +30,8 @@ export function WishEnvelope() {
             open ? "-translate-y-2 rotate-[-1deg]" : ""
           }`}
         />
-        <span className="pointer-events-none absolute inset-x-0 top-[34%] text-center font-display text-base tracking-normal text-olive sm:text-lg">
-          დააჭირე აქ
+        <span className="pointer-events-none absolute inset-x-0 top-[34%] px-5 text-center font-display text-base leading-relaxed tracking-normal text-olive sm:text-lg">
+          დაგვიტოვე შენი სურვილი
         </span>
       </button>
 

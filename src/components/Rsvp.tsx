@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { weddingDatabase } from "@/lib/wedding-database";
 import { familyLabel } from "@/lib/rsvp-party";
+import { AddToCalendar } from "@/components/AddToCalendar";
 const cake = { url: "/images/rsvp-cake.png" };
 
 type Answer = "yes" | "no" | null;
@@ -53,6 +54,7 @@ export function Rsvp() {
         <p className="animate-fade-in font-display text-xl font-light text-olive">
           {answer === "yes" ? "გმადლობთ! ველოდებით." : "გმადლობთ პასუხისთვის."}
         </p>
+        {answer === "yes" && <AddToCalendar />}
       </Card>
     );
   }
@@ -199,6 +201,7 @@ export function Rsvp() {
         )}
         {error && <p className="text-xs text-destructive">{error}</p>}
       </form>
+      {answer === "yes" && <AddToCalendar />}
     </Card>
   );
 }

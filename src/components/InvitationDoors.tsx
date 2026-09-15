@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const doorPanel = "/images/door-panel-white.jpg";
 const bow = "/images/chiffon-bow-olive.png";
-const venue = { url: "/images/goga-lika-venue.webp" };
+const venue = { url: "/images/hero-palace-gates.webp" };
 
 /** Timings, matched to the CSS transitions below. */
 const BOW_RELEASE = 520;
@@ -67,9 +67,9 @@ export function InvitationDoors({ onOpened, onOpening }: { onOpened?: () => void
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={venue.url}
-          alt="დადიანების სასახლის აკვარელის ხედი"
+          alt="დადიანების სასახლის ჭიშკრის აკვარელის ხედი"
           width={1024}
-          height={610}
+          height={1024}
           decoding="async"
           className={`h-full w-full object-cover object-center transition-transform duration-[2600ms] ease-drape lg:object-top ${
             opening ? "scale-100" : "scale-110"

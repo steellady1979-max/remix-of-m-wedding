@@ -8,8 +8,11 @@ import { Rsvp } from "@/components/Rsvp";
 import { WishEnvelope } from "@/components/WishEnvelope";
 const couple = { url: "/images/goga-lika-venue.webp" };
 const church = { url: "/images/sajvaros-church.webp" };
-const dinner = { url: "/images/bagrationi.webp" };
+const ceremony = { url: "/images/ceremony.jpg" };
+const dinner = { url: "/images/dinner-palace.webp" };
 const invitation = { url: "/images/wedding-invitation.jpg" };
+const dressCode = { url: "/images/dress-code.webp" };
+const preWishes = { url: "/images/pre-wishes.webp" };
 
 const TITLE = "გოგა & ლიკა — 22 სექტემბერი 2026";
 const DESCRIPTION =
@@ -36,6 +39,8 @@ const SCHEDULE = [
     time: "15:00",
     title: "ხელის მოწერის ცერემონია სოფ. კახათში",
     href: KAKHATI_MAP,
+    image: ceremony.url,
+    alt: "ხელის მოწერის ცერემონიის აკვარელის ნახატი",
   },
   {
     time: "18:00",
@@ -47,7 +52,7 @@ const SCHEDULE = [
     title: "ვახშამი",
     image: dinner.url,
     href: DINNER_MAP,
-    alt: "რესტორან ბაგრატიონის აკვარელის ნახატი",
+    alt: "ვახშმის ადგილის აკვარელის ნახატი",
   },
   {
     time: "21:00",
@@ -175,9 +180,9 @@ function Index() {
                       alt={item.alt ?? ""}
                       loading="lazy"
                       decoding="async"
-                      width={item.image === church.url ? 1024 : 896}
-                      height={item.image === church.url ? 576 : 1195}
-                      className="aspect-[4/3] w-full rounded-lg border border-olive/15 object-cover lg:aspect-[4/5]"
+                      width={item.image === church.url ? 1024 : item.image === ceremony.url ? 768 : 896}
+                      height={item.image === church.url ? 576 : item.image === ceremony.url ? 1376 : 1195}
+                      className="h-auto w-full rounded-lg border border-olive/15 object-contain"
                     />
                   )}
 
@@ -197,10 +202,57 @@ function Index() {
           </ul>
         </section>
 
+        {/* Dress code */}
+        <section className="bg-olive-mist px-6 py-24 text-center lg:py-32">
+          <div className="mx-auto grid w-full max-w-5xl items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+            <Reveal className="w-full">
+              <img
+                src={dressCode.url}
+                alt="პასტელურ ფერებში გამოწყობილი სტუმრების აკვარელის ნახატი"
+                loading="lazy"
+                decoding="async"
+                width={1024}
+                height={673}
+                className="h-auto w-full rounded-lg border border-olive/15 object-contain"
+              />
+            </Reveal>
+            <Reveal delay={120} className="flex flex-col items-center">
+              <h2 className="font-display text-3xl font-light text-olive sm:text-4xl lg:text-5xl">
+                დრესკოდი
+              </h2>
+              <p className="mt-6 max-w-sm text-base leading-8 text-ink/75 lg:text-lg">
+                პასტელური ფერები, თეთრი ფერი დავუთმოთ პატარძალს
+              </p>
+              <div className="mt-8 flex items-center justify-center gap-3" aria-label="პასტელური ფერების არჩევანი">
+                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-sage" />
+                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-rose" />
+                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-blue" />
+                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-lilac" />
+                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-yellow" />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* RSVP */}
         <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center lg:py-32">
           <Reveal className="flex w-full max-w-md justify-center lg:max-w-lg">
             <Rsvp />
+          </Reveal>
+        </section>
+
+        {/* Photograph before wishes */}
+        <section className="flex justify-center bg-white px-6 py-20 lg:py-28">
+          <Reveal className="w-full max-w-md lg:max-w-lg">
+            <img
+              src={preWishes.url}
+              alt="წყვილის ხელები ნიშნობის ბეჭდითა და წითელი ვარდებით"
+              loading="lazy"
+              decoding="async"
+              width={767}
+              height={1024}
+              className="h-auto w-full rounded-lg object-contain"
+            />
           </Reveal>
         </section>
 

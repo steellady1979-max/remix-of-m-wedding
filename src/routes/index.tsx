@@ -9,10 +9,11 @@ import { WishEnvelope } from "@/components/WishEnvelope";
 const couple = { url: "/images/goga-lika-venue.webp" };
 const church = { url: "/images/sajvaros-church.webp" };
 const ceremony = { url: "/images/ceremony.jpg" };
-const dinner = { url: "/images/dinner-palace.webp" };
+const dinner = { url: "/images/dinner-table.webp" };
+const cakeCutting = { url: "/images/cake-cutting-icon.webp" };
 const invitation = { url: "/images/wedding-invitation-new.webp" };
 const dressCode = { url: "/images/dress-code.webp" };
-const preWishes = { url: "/images/pre-wishes.webp" };
+const preWishes = { url: "/images/rsvp-couple.webp" };
 
 const TITLE = "გოგა & ლიკა — 22 სექტემბერი 2026";
 const DESCRIPTION =
@@ -34,6 +35,8 @@ const SCHEDULE = [
     href: CHURCH_MAP,
     image: church.url,
     alt: "საჯვაროს ეკლესიის აკვარელის ნახატი",
+    width: 1024,
+    height: 576,
   },
   {
     time: "15:00",
@@ -41,22 +44,32 @@ const SCHEDULE = [
     href: KAKHATI_MAP,
     image: ceremony.url,
     alt: "ხელის მოწერის ცერემონიის აკვარელის ნახატი",
+    width: 768,
+    height: 1376,
   },
   {
     time: "18:00",
     title: "სტუმრების მიღება",
     href: HOME_MAP,
+    width: undefined,
+    height: undefined,
   },
   {
     time: "19:00",
     title: "ვახშამი",
     image: dinner.url,
     href: DINNER_MAP,
-    alt: "ვახშმის ადგილის აკვარელის ნახატი",
+    alt: "სანთლებითა და თეთრი ყვავილებით გაფორმებული საქორწილო სუფრა",
+    width: 854,
+    height: 1000,
   },
   {
     time: "21:00",
     title: "ტორტის გაჭრა",
+    image: cakeCutting.url,
+    alt: "წყვილისა და საქორწილო ტორტის მინიმალისტური აიქონი",
+    width: 397,
+    height: 560,
   },
 ];
 
@@ -183,9 +196,9 @@ function Index() {
                       alt={item.alt ?? ""}
                       loading="lazy"
                       decoding="async"
-                      width={item.image === church.url ? 1024 : item.image === ceremony.url ? 768 : 896}
-                      height={item.image === church.url ? 576 : item.image === ceremony.url ? 1376 : 1195}
-                      className="photo-frame"
+                      width={item.width}
+                      height={item.height}
+                      className={`photo-frame ${item.image === cakeCutting.url ? "mx-auto max-w-[15rem]" : ""}`}
                     />
                   )}
 
@@ -250,11 +263,11 @@ function Index() {
           <Reveal className="w-full max-w-md lg:max-w-lg">
             <img
               src={preWishes.url}
-              alt="წყვილის ხელები ნიშნობის ბეჭდითა და წითელი ვარდებით"
+               alt="გოგა და ლიკა საღამოს ტერასაზე წითელი ვარდების თაიგულით"
               loading="lazy"
               decoding="async"
-              width={767}
-              height={1024}
+               width={674}
+               height={900}
               className="photo-frame"
             />
           </Reveal>

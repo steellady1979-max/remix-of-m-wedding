@@ -318,7 +318,61 @@
   .bow-sway {
     animation: bow-sway 5s ease-in-out infinite;
   }
+
+  /* One shared rule for every photo on the page */
+  .photo-frame {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-olive) 18%, transparent);
+    background: #fff;
+    padding: 0.4rem;
+    box-shadow: 0 10px 30px -18px rgba(60, 66, 40, 0.45);
+  }
+
+  /* Faint paper texture — pure CSS, no extra downloads */
+  .paper {
+    background-image:
+      radial-gradient(
+        circle at 20% 15%,
+        color-mix(in oklab, var(--color-olive) 5%, transparent),
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 85% 80%,
+        color-mix(in oklab, var(--color-olive) 4%, transparent),
+        transparent 50%
+      );
+  }
+
+  /* Small botanical divider between sections */
+  .botanical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: color-mix(in oklab, var(--color-olive) 70%, transparent);
+  }
+
+  .botanical::before,
+  .botanical::after {
+    content: "";
+    height: 1px;
+    width: clamp(3rem, 18vw, 8rem);
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklab, var(--color-olive) 45%, transparent)
+    );
+  }
+
+  .botanical::after {
+    transform: rotate(180deg);
+  }
 }
+
 
 @keyframes bow-sway {
   0%,

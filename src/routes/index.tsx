@@ -32,6 +32,7 @@ const SCHEDULE = [
   {
     time: "13:00",
     title: "ჯვრისწერა",
+    venue: "საჯვაროს ეკლესია",
     href: CHURCH_MAP,
     image: church.url,
     alt: "საჯვაროს ეკლესიის აკვარელის ნახატი",
@@ -57,6 +58,7 @@ const SCHEDULE = [
   {
     time: "19:00",
     title: "ვახშამი",
+    venue: "რესტორანი ბაგრატიონი",
     image: dinner.url,
     href: DINNER_MAP,
     alt: "სანთლებითა და თეთრი ყვავილებით გაფორმებული საქორწილო სუფრა",
@@ -191,7 +193,14 @@ function Index() {
                   <span className="font-display text-2xl font-light tabular-nums text-olive lg:text-3xl">
                     {item.time}
                   </span>
-                  <span className="text-sm leading-relaxed text-ink/80">{item.title}</span>
+                  <div className="space-y-2">
+                    <p className="text-sm leading-relaxed text-ink/80">{item.title}</p>
+                    {item.venue && (
+                      <p className="text-base font-semibold leading-relaxed text-olive [font-family:system-ui,sans-serif]">
+                        {item.venue}
+                      </p>
+                    )}
+                  </div>
 
                   {item.image && (
                     <img

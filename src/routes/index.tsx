@@ -64,9 +64,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "canonical", href: "/" },
       {
         rel: "preload",
         as: "font",
@@ -155,9 +157,12 @@ function Index() {
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">დღის განრიგი</p>
           </Reveal>
 
-          <ul className="grid w-full max-w-md grid-cols-1 gap-12 md:max-w-3xl md:grid-cols-2 lg:max-w-7xl lg:grid-cols-5 lg:items-stretch lg:gap-6">
-            {SCHEDULE.map((item) => (
-              <Reveal key={item.time} className="h-full">
+          <ul className="grid w-full max-w-md grid-cols-1 gap-12 md:max-w-3xl md:grid-cols-2 lg:max-w-6xl lg:grid-cols-6 lg:items-stretch lg:gap-10">
+            {SCHEDULE.map((item, index) => (
+              <Reveal
+                key={item.time}
+                className={`h-full lg:col-span-2 ${index === 3 ? "lg:col-start-2" : ""}`}
+              >
                 <li className="flex h-full flex-col items-center gap-5 text-center">
                   <span className="font-display text-2xl font-light tabular-nums text-olive lg:text-3xl">
                     {item.time}

@@ -23,9 +23,11 @@ export const Route = createFileRoute("/admin")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/admin" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "/admin" }],
   }),
   component: AdminPage,
 });

@@ -146,6 +146,11 @@
   --color-olive-soft: oklch(0.62 0.05 125);
   --color-olive-mist: oklch(0.95 0.015 125);
   --color-champagne: oklch(0.97 0.008 110);
+  --color-pastel-sage: oklch(0.82 0.055 137);
+  --color-pastel-rose: oklch(0.86 0.055 15);
+  --color-pastel-blue: oklch(0.85 0.045 230);
+  --color-pastel-lilac: oklch(0.83 0.05 305);
+  --color-pastel-yellow: oklch(0.9 0.07 91);
   --font-display: "Galaktioni", Georgia, serif;
   --font-sans: "Galaktioni", system-ui, sans-serif;
   --ease-drape: cubic-bezier(0.65, 0, 0.2, 1);

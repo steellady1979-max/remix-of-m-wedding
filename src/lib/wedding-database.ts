@@ -9,8 +9,8 @@ import type { Database } from "@/integrations/supabase/types";
  * canonical project connection here prevents hosting-provider environment
  * variables from silently pointing RSVP requests at a different project.
  */
-const DATABASE_URL = "https://peulkegytbtcaiwevapv.supabase.co";
-const DATABASE_PUBLISHABLE_KEY = "sb_publishable_6eiI7qk9s9ZBGLJ_XCe84Q_UTXLdxvk";
+const DATABASE_URL = "https://ydngzyifrabegebiwrpc.supabase.co";
+const DATABASE_PUBLISHABLE_KEY = "sb_publishable_TGLeQ9IOpVnVH6hBnb4R-A_-OwdBnu3";
 
 function publicDatabaseFetch(input: RequestInfo | URL, init?: RequestInit) {
   const headers = new Headers(

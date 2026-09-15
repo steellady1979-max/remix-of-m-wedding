@@ -74,19 +74,27 @@ export function Rsvp() {
           if (!canSend || saving) return;
           setSaving(true);
           setError(null);
+          
           const { error: dbError } = await weddingDatabase.from("rsvps").insert({
+            name: answer === "yes" ? name.trim() : "სამწუხაროდ ვერ",
             attending: answer === "yes",
-            guest_name: answer === "yes" ? name.trim() : null,
+            guests_count: answer === "yes" 
+              ? family 
+                ? Number(familyCount) 
+                : plusOne 
+                  ? 2 
+                  : 1 
+              : 1,
             plus_one: answer === "yes" && (plusOne || family),
-            plus_one_name:
-              answer === "yes"
-                ? family
-                  ? familyLabel(Number(familyCount))
-                  : plusOne
-                    ? guestName.trim()
-                    : null
-                : null,
+            notes: answer === "yes" 
+              ? family 
+                ? `ოჯახით: ${familyCount} წევრი` 
+                : plusOne 
+                  ? `თანმხლები: ${guestName.trim()}` 
+                  : "მარტომ"
+              : "ვერ ახერხებს მოსვლას",
           });
+
           setSaving(false);
           if (dbError) {
             setError("ვერ გაიგზავნა, სცადეთ ხელახლა");

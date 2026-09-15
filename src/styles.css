@@ -26,20 +26,14 @@
 .rose-petal {
   display: block;
   width: var(--petal-size);
-  height: calc(var(--petal-size) * 1.25);
-  border-radius: 65% 35% 62% 38% / 55% 40% 60% 45%;
-  background: radial-gradient(ellipse at 30% 25%, oklch(1 0 0) 15%, oklch(0.97 0.008 95) 60%, oklch(0.87 0.016 95));
-  box-shadow: inset -1px -2px 3px oklch(0.7 0.02 95 / 15%), 1px 3px 5px oklch(0.35 0.02 95 / 18%);
+  height: calc(var(--petal-size) * 1.1);
+  color: oklch(0.99 0.003 95);
   animation: rose-petal-turn calc(var(--sway-duration) * 2) linear infinite;
-}
-
-.rose-petals-paused span {
-  animation-play-state: paused;
 }
 
 @keyframes rose-petal-fall {
   0% { transform: translateY(0); opacity: 0; }
-  8%, 85% { opacity: 0.85; }
+  8%, 85% { opacity: 0.12; }
   100% { transform: translateY(calc(100dvh + 80px)); opacity: 0; }
 }
 
@@ -54,12 +48,12 @@
 }
 
 @media (max-width: 640px) {
-  .rose-petal-fall:nth-child(n + 13) { display: none; }
+  .rose-petal-fall:nth-child(n + 10) { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rose-petals, .petal-toggle { display: none; }
-  .rose-petals span { animation: none; }
+  .rose-petals { display: none; }
+  .rose-petals span, .rose-petal { animation: none; }
 }
 
 @custom-variant dark (&:is(.dark *));

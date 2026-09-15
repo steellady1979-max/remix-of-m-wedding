@@ -207,7 +207,7 @@ function Index() {
 
 
         {/* Dress code */}
-        <section className="bg-olive-mist px-6 py-24 text-center lg:py-32">
+        <section className="paper bg-white px-6 py-24 text-center lg:py-32">
           <div className="mx-auto grid w-full max-w-5xl items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
             <Reveal className="w-full">
               <img
@@ -217,7 +217,7 @@ function Index() {
                 decoding="async"
                 width={1024}
                 height={673}
-                className="h-auto w-full rounded-lg border border-olive/15 object-contain"
+                className="photo-frame"
               />
             </Reveal>
             <Reveal delay={120} className="flex flex-col items-center">
@@ -246,7 +246,7 @@ function Index() {
         </section>
 
         {/* Photograph before wishes */}
-        <section className="flex justify-center bg-white px-6 py-20 lg:py-28">
+        <section className="paper flex justify-center bg-white px-6 py-20 lg:py-28">
           <Reveal className="w-full max-w-md lg:max-w-lg">
             <img
               src={preWishes.url}
@@ -255,14 +255,17 @@ function Index() {
               decoding="async"
               width={767}
               height={1024}
-              className="h-auto w-full rounded-lg object-contain"
+              className="photo-frame"
             />
           </Reveal>
         </section>
 
         {/* Wishes envelope */}
-        <section className="flex flex-col items-center gap-8 bg-white px-6 py-24 text-center lg:py-32">
+        <section className="flex flex-col items-center gap-8 bg-olive-mist px-6 py-24 text-center lg:py-32">
           <Reveal>
+            <div className="botanical mb-6" aria-hidden="true">
+              <span className="text-base leading-none">✦</span>
+            </div>
             <p className="text-[0.7rem] tracking-[0.45em] text-olive">სურვილები</p>
             <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl lg:text-4xl">
               სურვილების კონვერტი
@@ -272,6 +275,7 @@ function Index() {
             <WishEnvelope />
           </Reveal>
         </section>
+
 
 
 

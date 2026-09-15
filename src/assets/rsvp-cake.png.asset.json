@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "fadf569e-62e0-4890-9f69-c10ce9452f47",
-  "project_id": "356a5b58-214a-408b-9ed4-acdf2995f393",
-  "url": "/__l5e/assets-v1/fadf569e-62e0-4890-9f69-c10ce9452f47/rsvp-cake.png",
-  "r2_key": "a/v1/356a5b58-214a-408b-9ed4-acdf2995f393/fadf569e-62e0-4890-9f69-c10ce9452f47/rsvp-cake.png",
-  "original_filename": "rsvp-cake.png",
-  "size": 657695,
   "content_type": "image/png",
-  "created_at": "2026-09-01T17:42:40Z"
+  "created_at": "2026-09-01T17:42:40Z",
+  "original_filename": "rsvp-cake.png",
+  "project_id": "54e2f6a6-5983-4d12-aa39-ac1f38df6b3c",
+  "r2_key": "a/v1/54e2f6a6-5983-4d12-aa39-ac1f38df6b3c/fadf569e-62e0-4890-9f69-c10ce9452f47/rsvp-cake.png",
+  "size": 657695,
+  "url": "/__l5e/assets-v1/fadf569e-62e0-4890-9f69-c10ce9452f47/rsvp-cake.png",
+  "version": 1
 }

@@ -2,6 +2,66 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* White rose petals float above the page without intercepting guest interactions. */
+.rose-petals {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.rose-petal-fall {
+  position: absolute;
+  top: -40px;
+  animation: rose-petal-fall var(--fall-duration) var(--fall-delay) linear infinite;
+}
+
+.rose-petal-sway {
+  display: block;
+  animation: rose-petal-sway var(--sway-duration) ease-in-out infinite alternate;
+}
+
+.rose-petal {
+  display: block;
+  width: var(--petal-size);
+  height: calc(var(--petal-size) * 1.25);
+  border-radius: 65% 35% 62% 38% / 55% 40% 60% 45%;
+  background: radial-gradient(ellipse at 30% 25%, oklch(1 0 0) 15%, oklch(0.97 0.008 95) 60%, oklch(0.87 0.016 95));
+  box-shadow: inset -1px -2px 3px oklch(0.7 0.02 95 / 15%), 1px 3px 5px oklch(0.35 0.02 95 / 18%);
+  animation: rose-petal-turn calc(var(--sway-duration) * 2) linear infinite;
+}
+
+.rose-petals-paused span {
+  animation-play-state: paused;
+}
+
+@keyframes rose-petal-fall {
+  0% { transform: translateY(0); opacity: 0; }
+  8%, 85% { opacity: 0.85; }
+  100% { transform: translateY(calc(100dvh + 80px)); opacity: 0; }
+}
+
+@keyframes rose-petal-sway {
+  from { transform: translateX(-22px); }
+  to { transform: translateX(22px); }
+}
+
+@keyframes rose-petal-turn {
+  from { transform: rotate(var(--petal-turn)) rotateY(0deg); }
+  to { transform: rotate(calc(var(--petal-turn) + 360deg)) rotateY(360deg); }
+}
+
+@media (max-width: 640px) {
+  .rose-petal-fall:nth-child(n + 13) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rose-petals, .petal-toggle { display: none; }
+  .rose-petals span { animation: none; }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*

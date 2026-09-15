@@ -5,12 +5,13 @@ import { Countdown } from "@/components/Countdown";
 import { InvitationDoors } from "@/components/InvitationDoors";
 import { Reveal } from "@/components/Reveal";
 import { Rsvp } from "@/components/Rsvp";
+import { RosePetals } from "@/components/RosePetals";
 import { WishEnvelope } from "@/components/WishEnvelope";
 const couple = { url: "/images/goga-lika-venue.webp" };
 const church = { url: "/images/sajvaros-church.webp" };
 const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner-table.webp" };
-const cakeCutting = { url: "/images/cake-cutting-icon.webp" };
+const cakeCutting = { url: "/images/cake-cutting-couple.png" };
 const invitation = { url: "/images/countdown-invitation.webp" };
 
 const TITLE = "გოგა & ლიკა — 22 სექტემბერი 2026";
@@ -66,8 +67,8 @@ const SCHEDULE = [
     title: "ტორტის გაჭრა",
     image: cakeCutting.url,
     alt: "წყვილისა და საქორწილო ტორტის მინიმალისტური აიქონი",
-    width: 397,
-    height: 560,
+    width: 1550,
+    height: 2185,
   },
 ];
 
@@ -106,6 +107,7 @@ function Index() {
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-champagne font-sans text-ink">
       <InvitationDoors onOpened={() => setRevealed(true)} />
+      {revealed && <RosePetals />}
 
       <div
         className={`transition-opacity duration-1000 ease-out ${
@@ -196,7 +198,11 @@ function Index() {
                       decoding="async"
                       width={item.width}
                       height={item.height}
-                      className={`photo-frame ${item.image === cakeCutting.url ? "mx-auto max-w-[15rem]" : ""}`}
+                      className={
+                        item.image === cakeCutting.url
+                          ? "mx-auto aspect-square w-full max-w-[19rem] object-cover"
+                          : "photo-frame"
+                      }
                     />
                   )}
 

@@ -1,17 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-
 import { weddingDatabase } from "@/lib/wedding-database";
 import { partySize, familySize } from "@/lib/rsvp-party";
-import {
-  normalizeRsvp,
-  normalizeWish,
-  type AdminRsvp,
-  type AdminWish,
-} from "@/lib/admin.types";
 
 const ADMIN_PASSWORD = "GOGALIKA22";
-
 
 const TITLE = "ადმინ პანელი — გოგა & ლიკა";
 const DESCRIPTION = "სტუმრების დასწრების პასუხები და სურვილები.";
@@ -53,6 +45,7 @@ function download(name: string, csv: string) {
 }
 
 function fmt(iso: string) {
+  if (!iso) return "—";
   return new Date(iso).toLocaleString("ka-GE");
 }
 
@@ -61,11 +54,10 @@ function AdminPage() {
   const [unlocked, setUnlocked] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [rsvps, setRsvps] = useState<AdminRsvp[]>([]);
-  const [wishes, setWishes] = useState<AdminWish[]>([]);
+  const [rsvps, setRsvps] = useState<any[]>([]);
+  const [wishes, setWishes] = useState<any[]>([]);
 
   async function load(pass: string) {
-    // Password check is 100% local — no database, RPC, or network call involved.
     if (pass.trim() !== ADMIN_PASSWORD) {
       localStorage.removeItem("isAdmin");
       setUnlocked(false);
@@ -77,24 +69,26 @@ function AdminPage() {
     setUnlocked(true);
     setBusy(true);
     setError(null);
+
     try {
-      const { data, error: rpcError } = await weddingDatabase.rpc("admin_login", {
-        _code: pass.trim(),
-      });
-      const payload = data as { ok?: boolean; rsvps?: unknown; wishes?: unknown } | null;
-      if (rpcError || !payload?.ok) {
-        setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
-        return;
-      }
-      const rsvpRows: AdminRsvp[] = (Array.isArray(payload.rsvps) ? payload.rsvps : [])
-        .map(normalizeRsvp)
-        .filter((r): r is AdminRsvp => r !== null);
-      const wishRows: AdminWish[] = (Array.isArray(payload.wishes) ? payload.wishes : [])
-        .map(normalizeWish)
-        .filter((w): w is AdminWish => w !== null);
-      setRsvps(rsvpRows);
-      setWishes(wishRows);
-    } catch {
+      const { data: rsvpData, error: rsvpError } = await weddingDatabase
+        .from("rsvps")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (rsvpError) throw rsvpError;
+
+      const { data: wishData, error: wishError } = await weddingDatabase
+        .from("wishes")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (wishError) throw wishError;
+
+      setRsvps(rsvpData || []);
+      setWishes(wishData || []);
+    } catch (err) {
+      console.error(err);
       setError("მონაცემები ვერ ჩაიტვირთა. გთხოვთ, განაახლოთ გვერდი.");
     } finally {
       setBusy(false);
@@ -103,9 +97,7 @@ function AdminPage() {
 
   useEffect(() => {
     if (localStorage.getItem("isAdmin") === "true") void load(ADMIN_PASSWORD);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   if (!unlocked) {
     return (
@@ -145,8 +137,7 @@ function AdminPage() {
 
   const yes = rsvps.filter((r) => r.attending);
   const no = rsvps.filter((r) => !r.attending);
-  const guests = yes.reduce((n, r) => n + partySize(r), 0);
-  const loadError: string | null = error;
+  const guests = yes.reduce((n, r) => n + (Number(r.guests_count) || partySize(r) || 1), 0);
 
   return (
     <main className="min-h-screen bg-champagne px-5 py-14 font-sans text-ink sm:px-8">
@@ -170,7 +161,7 @@ function AdminPage() {
           </button>
         </header>
 
-        {loadError && <p className="text-center text-sm text-destructive">{loadError}</p>}
+        {error && <p className="text-center text-sm text-destructive">{error}</p>}
 
         <section className="grid grid-cols-3 gap-3">
           {[
@@ -188,6 +179,7 @@ function AdminPage() {
           ))}
         </section>
 
+        {/* RSVP სექცია */}
         <section className="overflow-hidden rounded-2xl border border-olive/20 bg-white">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-olive/15 px-5 py-4">
             <h2 className="font-display text-lg font-light text-olive">დასწრების პასუხები</h2>
@@ -197,13 +189,12 @@ function AdminPage() {
                 download(
                   "rsvps.csv",
                   toCsv([
-                    ["სახელი", "პასუხი", "+1 / ოჯახით", "თანმხლები", "ადამიანების რაოდენობა", "თარიღი"],
+                    ["სახელი", "პასუხი", "რაოდენობა", "შენიშვნა", "თარიღი"],
                     ...rsvps.map((r) => [
-                      r.guest_name ?? "",
+                      r.name ?? r.guest_name ?? "",
                       r.attending ? "მოდის" : "ვერ მოდის",
-                      familySize(r) ? "ოჯახით" : r.plus_one ? "კი" : "არა",
-                      r.plus_one_name ?? "",
-                      String(partySize(r)),
+                      String(r.guests_count ?? 1),
+                      r.notes ?? "",
                       fmt(r.created_at),
                     ]),
                   ]),
@@ -221,12 +212,10 @@ function AdminPage() {
             {rsvps.map((r) => (
               <li key={r.id} className="flex items-start justify-between gap-4 px-5 py-4">
                 <div>
-                  <p className="text-sm text-ink">{r.guest_name || "—"}</p>
-                  {r.plus_one && (
-                    <p className="mt-1 text-sm text-ink/70">
-                      {familySize(r) ? r.plus_one_name : `+1: ${r.plus_one_name || "—"}`}
-                    </p>
-                  )}
+                  <p className="text-sm font-medium text-ink">{r.name || r.guest_name || "—"}</p>
+                  <p className="mt-1 text-sm text-ink/70">
+                    რაოდენობა: {r.guests_count || 1} {r.notes ? `| შენიშვნა: ${r.notes}` : ""}
+                  </p>
                   <p className="mt-1 text-sm text-ink/40">{fmt(r.created_at)}</p>
                 </div>
                 <span
@@ -241,6 +230,7 @@ function AdminPage() {
           </ul>
         </section>
 
+        {/* სურვილების სექცია */}
         <section className="overflow-hidden rounded-2xl border border-olive/20 bg-white">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-olive/15 px-5 py-4">
             <h2 className="font-display text-lg font-light text-olive">სურვილები</h2>
@@ -251,7 +241,7 @@ function AdminPage() {
                   "wishes.csv",
                   toCsv([
                     ["სურვილი", "თარიღი"],
-                    ...wishes.map((w) => [w.message, fmt(w.created_at)]),
+                    ...wishes.map((w) => [w.message || w.content || "", fmt(w.created_at)]),
                   ]),
                 )
               }
@@ -266,7 +256,7 @@ function AdminPage() {
             )}
             {wishes.map((w) => (
               <li key={w.id} className="px-5 py-4">
-                <p className="text-sm leading-relaxed text-ink/85">{w.message}</p>
+                <p className="text-sm leading-relaxed text-ink/85">{w.message || w.content || "—"}</p>
                 <p className="mt-2 text-sm text-ink/40">{fmt(w.created_at)}</p>
               </li>
             ))}

@@ -10,7 +10,7 @@ const couple = { url: "/images/goga-lika-venue.webp" };
 const church = { url: "/images/sajvaros-church.webp" };
 const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner-palace.webp" };
-const invitation = { url: "/images/wedding-invitation.jpg" };
+const invitation = { url: "/images/wedding-invitation-new.webp" };
 const dressCode = { url: "/images/dress-code.webp" };
 const preWishes = { url: "/images/pre-wishes.webp" };
 
@@ -149,9 +149,9 @@ function Index() {
               alt="საქორწილო მოსაწვევი კონვერტთან და თეთრ ლილიასთან ერთად"
               loading="lazy"
               decoding="async"
-              width={1000}
-              height={1410}
-              className="mx-auto w-full object-contain"
+              width={1024}
+              height={1444}
+              className="mx-auto h-auto w-full object-contain"
             />
           </Reveal>
         </section>

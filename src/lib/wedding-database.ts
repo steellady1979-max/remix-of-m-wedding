@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-
 import type { Database } from "@/integrations/supabase/types";
 
 /**
@@ -10,7 +9,7 @@ import type { Database } from "@/integrations/supabase/types";
  * variables from silently pointing RSVP requests at a different project.
  */
 const DATABASE_URL = "https://ydngzyifrabegebiwrpc.supabase.co";
-const DATABASE_PUBLISHABLE_KEY = "sb_publishable_TGLeQ9IOpVnVH6hBnb4R-A_-OwdBnu3";
+const DATABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlkbmd6eWlmcmFiZWdlYml3cnBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzA3ODUsImV4cCI6MjEwNTA0Njc4NX0.lwGeZNXfOQcVi_fZQuhNaOm5c1-3E-5EU8lfBnhlAfo";
 
 function publicDatabaseFetch(input: RequestInfo | URL, init?: RequestInit) {
   const headers = new Headers(

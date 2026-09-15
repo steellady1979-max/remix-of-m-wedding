@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { weddingDatabase } from "@/lib/wedding-database";
+import { partySize, familySize } from "@/lib/rsvp-party";
 import {
   normalizeRsvp,
   normalizeWish,
@@ -110,7 +111,7 @@ function AdminPage() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-champagne px-6 font-sans text-ink">
         <div className="w-full max-w-sm rounded-2xl border border-olive/20 bg-white p-8 text-center shadow-[0_20px_50px_-30px_rgba(60,70,40,0.45)]">
-          <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინი</p>
+          <p className="text-sm tracking-normal text-olive">ადმინი</p>
           <h1 className="mt-4 font-display text-2xl font-light text-olive">პაროლი</h1>
           <div className="hairline mx-auto mt-6 w-24" />
           <form
@@ -121,7 +122,7 @@ function AdminPage() {
             }}
           >
             <input
-              className={`${inputClass} text-center tracking-[0.3em]`}
+              className={`${inputClass} text-center tracking-normal`}
               type="password"
               value={code}
               onChange={(e) => setCode(e.target.value)}
@@ -131,7 +132,7 @@ function AdminPage() {
             <button
               type="submit"
               disabled={busy}
-              className="w-full rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
+              className="w-full rounded-full bg-olive px-6 py-3 text-sm tracking-normal text-white transition-opacity disabled:opacity-40"
             >
               {busy ? "იტვირთება..." : "შესვლა"}
             </button>
@@ -144,14 +145,14 @@ function AdminPage() {
 
   const yes = rsvps.filter((r) => r.attending);
   const no = rsvps.filter((r) => !r.attending);
-  const guests = yes.reduce((n, r) => n + 1 + (r.plus_one ? 1 : 0), 0);
+  const guests = yes.reduce((n, r) => n + partySize(r), 0);
   const loadError: string | null = error;
 
   return (
     <main className="min-h-screen bg-champagne px-5 py-14 font-sans text-ink sm:px-8">
       <div className="mx-auto w-full max-w-3xl space-y-10">
         <header className="text-center">
-          <p className="text-[0.65rem] tracking-[0.45em] text-olive">ადმინ პანელი</p>
+          <p className="text-sm tracking-normal text-olive">ადმინ პანელი</p>
           <h1 className="mt-4 font-display text-3xl font-light text-olive">
             გოგა & ლიკა
           </h1>
@@ -163,7 +164,7 @@ function AdminPage() {
               setUnlocked(false);
               setCode("");
             }}
-            className="mt-6 text-[0.7rem] tracking-[0.3em] text-ink/50 underline-offset-4 hover:underline"
+            className="mt-6 text-sm tracking-normal text-ink/50 underline-offset-4 hover:underline"
           >
             გამოსვლა
           </button>
@@ -182,7 +183,7 @@ function AdminPage() {
               className="rounded-2xl border border-olive/20 bg-white px-4 py-6 text-center"
             >
               <p className="font-display text-3xl font-light tabular-nums text-olive">{s.value}</p>
-              <p className="mt-2 text-[0.6rem] tracking-[0.25em] text-ink/60">{s.label}</p>
+              <p className="mt-2 text-sm tracking-normal text-ink/60">{s.label}</p>
             </div>
           ))}
         </section>
@@ -196,18 +197,19 @@ function AdminPage() {
                 download(
                   "rsvps.csv",
                   toCsv([
-                    ["სახელი", "პასუხი", "+1", "თანმხლები", "თარიღი"],
+                    ["სახელი", "პასუხი", "+1 / ოჯახით", "თანმხლები", "ადამიანების რაოდენობა", "თარიღი"],
                     ...rsvps.map((r) => [
                       r.guest_name ?? "",
                       r.attending ? "მოდის" : "ვერ მოდის",
-                      r.plus_one ? "კი" : "არა",
+                      familySize(r) ? "ოჯახით" : r.plus_one ? "კი" : "არა",
                       r.plus_one_name ?? "",
+                      String(partySize(r)),
                       fmt(r.created_at),
                     ]),
                   ]),
                 )
               }
-              className="rounded-full bg-olive px-5 py-2 text-[0.7rem] tracking-[0.2em] text-white"
+              className="rounded-full bg-olive px-5 py-2 text-sm tracking-normal text-white"
             >
               ექსელში გადმოწერა
             </button>
@@ -221,12 +223,14 @@ function AdminPage() {
                 <div>
                   <p className="text-sm text-ink">{r.guest_name || "—"}</p>
                   {r.plus_one && (
-                    <p className="mt-1 text-xs text-ink/60">+1: {r.plus_one_name || "—"}</p>
+                    <p className="mt-1 text-sm text-ink/70">
+                      {familySize(r) ? r.plus_one_name : `+1: ${r.plus_one_name || "—"}`}
+                    </p>
                   )}
-                  <p className="mt-1 text-[0.65rem] text-ink/40">{fmt(r.created_at)}</p>
+                  <p className="mt-1 text-sm text-ink/40">{fmt(r.created_at)}</p>
                 </div>
                 <span
-                  className={`shrink-0 rounded-full px-3 py-1 text-[0.65rem] tracking-[0.15em] ${
+                  className={`shrink-0 rounded-full px-3 py-1 text-sm tracking-normal ${
                     r.attending ? "bg-olive text-white" : "bg-olive-mist text-olive"
                   }`}
                 >
@@ -251,7 +255,7 @@ function AdminPage() {
                   ]),
                 )
               }
-              className="rounded-full bg-olive px-5 py-2 text-[0.7rem] tracking-[0.2em] text-white"
+              className="rounded-full bg-olive px-5 py-2 text-sm tracking-normal text-white"
             >
               ექსელში გადმოწერა
             </button>
@@ -263,7 +267,7 @@ function AdminPage() {
             {wishes.map((w) => (
               <li key={w.id} className="px-5 py-4">
                 <p className="text-sm leading-relaxed text-ink/85">{w.message}</p>
-                <p className="mt-2 text-[0.65rem] text-ink/40">{fmt(w.created_at)}</p>
+                <p className="mt-2 text-sm text-ink/40">{fmt(w.created_at)}</p>
               </li>
             ))}
           </ul>

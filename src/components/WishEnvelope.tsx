@@ -30,7 +30,7 @@ export function WishEnvelope() {
             open ? "-translate-y-2 rotate-[-1deg]" : ""
           }`}
         />
-        <span className="pointer-events-none absolute inset-x-0 top-[34%] text-center font-display text-base tracking-[0.3em] text-olive sm:text-lg">
+        <span className="pointer-events-none absolute inset-x-0 top-[34%] text-center font-display text-base tracking-normal text-olive sm:text-lg">
           დააჭირე აქ
         </span>
       </button>
@@ -66,7 +66,7 @@ export function WishEnvelope() {
                   }
                   setSent(true);
                 }}
-                className="w-full rounded-md bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
+                className="w-full rounded-md bg-olive px-6 py-3 text-sm tracking-normal text-white transition-opacity disabled:opacity-40"
               >
                 {saving ? "იგზავნება..." : "სურვილის დატოვება"}
               </button>

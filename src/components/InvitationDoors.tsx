@@ -127,7 +127,7 @@ export function InvitationDoors({ onOpened, onOpening }: { onOpened?: () => void
 
       {/* Prompt */}
       <p
-        className={`absolute inset-x-0 bottom-24 z-10 text-center text-[0.7rem] tracking-[0.45em] text-olive transition-opacity duration-500 ${
+        className={`absolute inset-x-0 bottom-24 z-10 text-center text-sm tracking-normal text-olive transition-opacity duration-500 ${
           opening ? "opacity-0" : "animate-pulse opacity-100"
         }`}
       >

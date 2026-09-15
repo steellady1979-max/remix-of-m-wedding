@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { weddingDatabase } from "@/lib/wedding-database";
+import { familyLabel } from "@/lib/rsvp-party";
 const cake = { url: "/images/rsvp-cake.png" };
 
 type Answer = "yes" | "no" | null;
@@ -31,6 +32,8 @@ export function Rsvp() {
   const [answer, setAnswer] = useState<Answer>(null);
   const [name, setName] = useState("");
   const [plusOne, setPlusOne] = useState(false);
+  const [family, setFamily] = useState(false);
+  const [familyCount, setFamilyCount] = useState("4");
   const [guestName, setGuestName] = useState("");
   const [sent, setSent] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -38,7 +41,11 @@ export function Rsvp() {
 
   const canSend =
     answer === "no" ||
-    (answer === "yes" && name.trim().length > 1 && (!plusOne || guestName.trim().length > 1));
+    (answer === "yes" &&
+      name.trim().length > 1 &&
+      (family
+        ? /^\d+$/.test(familyCount) && Number(familyCount) >= 3 && Number(familyCount) <= 99
+        : !plusOne || guestName.trim().length > 1));
 
   if (sent) {
     return (
@@ -52,7 +59,7 @@ export function Rsvp() {
 
   return (
     <Card>
-      <p className="text-[0.65rem] tracking-[0.45em] text-olive">დასწრება</p>
+      <p className="text-sm tracking-normal text-olive">დასწრება</p>
       <h2 className="mt-4 font-display text-2xl font-light text-olive sm:text-3xl">
         შეძლებთ მობრძანებას?
       </h2>
@@ -68,8 +75,15 @@ export function Rsvp() {
           const { error: dbError } = await weddingDatabase.from("rsvps").insert({
             attending: answer === "yes",
             guest_name: answer === "yes" ? name.trim() : null,
-            plus_one: answer === "yes" && plusOne,
-            plus_one_name: answer === "yes" && plusOne ? guestName.trim() : null,
+            plus_one: answer === "yes" && (plusOne || family),
+            plus_one_name:
+              answer === "yes"
+                ? family
+                  ? familyLabel(Number(familyCount))
+                  : plusOne
+                    ? guestName.trim()
+                    : null
+                : null,
           });
           setSaving(false);
           if (dbError) {
@@ -104,7 +118,7 @@ export function Rsvp() {
         {answer === "yes" && (
           <div className="animate-fade-in space-y-4 text-left">
             <label className="block">
-              <span className="text-[0.65rem] tracking-[0.3em] text-olive">სახელი, გვარი</span>
+              <span className="text-sm tracking-normal text-olive">სახელი, გვარი</span>
               <input
                 className={`mt-2 ${inputClass}`}
                 value={name}
@@ -117,17 +131,52 @@ export function Rsvp() {
               <input
                 type="checkbox"
                 checked={plusOne}
-                onChange={(e) => setPlusOne(e.target.checked)}
+                onChange={(e) => {
+                  setPlusOne(e.target.checked);
+                  setFamily(false);
+                }}
                 className="h-4 w-4 accent-olive"
               />
               +1 თანმხლები პირით
             </label>
 
+            <label className="flex items-center gap-3 rounded-md bg-olive-mist/50 px-4 py-3 text-sm text-ink/80">
+              <input
+                type="checkbox"
+                checked={family}
+                onChange={(e) => {
+                  setFamily(e.target.checked);
+                  setPlusOne(false);
+                }}
+                className="h-5 w-5 accent-olive"
+              />
+              ოჯახით
+            </label>
+
+            {family && (
+              <label className="block">
+                <span className="text-sm text-olive">ადამიანების რაოდენობა, თქვენი ჩათვლით</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={3}
+                  max={99}
+                  step={1}
+                  required
+                  className={`mt-2 ${inputClass}`}
+                  value={familyCount}
+                  onChange={(e) => setFamilyCount(e.target.value)}
+                  aria-describedby="family-count-help"
+                />
+                <span id="family-count-help" className="mt-2 block text-sm text-ink/70">
+                  მიუთითეთ ოჯახის ყველა წევრი, ბავშვების ჩათვლით.
+                </span>
+              </label>
+            )}
+
             {plusOne && (
               <label className="block animate-fade-in">
-                <span className="text-[0.65rem] tracking-[0.3em] text-olive">
-                  თანმხლების სახელი, გვარი
-                </span>
+                <span className="text-sm tracking-normal text-olive">თანმხლების სახელი, გვარი</span>
                 <input
                   className={`mt-2 ${inputClass}`}
                   value={guestName}
@@ -143,7 +192,7 @@ export function Rsvp() {
           <button
             type="submit"
             disabled={!canSend || saving}
-            className="w-full animate-fade-in rounded-full bg-olive px-6 py-3 text-sm tracking-[0.25em] text-white transition-opacity disabled:opacity-40"
+            className="w-full animate-fade-in rounded-full bg-olive px-6 py-3 text-sm tracking-normal text-white transition-opacity disabled:opacity-40"
           >
             {saving ? "იგზავნება..." : "გაგზავნა"}
           </button>

@@ -38,7 +38,7 @@ export function Countdown({ target }: { target: string }) {
           <div className="font-display text-3xl font-light tabular-nums text-olive sm:text-4xl">
             {left ? String(left[u.key]).padStart(2, "0") : "--"}
           </div>
-          <div className="mt-1 text-[0.6rem] uppercase tracking-[0.25em] text-ink/55">
+          <div className="mt-1 text-sm uppercase tracking-normal text-ink/55">
             {u.label}
           </div>
         </div>

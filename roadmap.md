@@ -7,3 +7,6 @@
 - [x] Optimize and place the newly uploaded schedule and dress-code images without cropping.
 - [x] Add the dress-code section and pre-wishes image.
 - [x] Verify the updated page on mobile and desktop.
+- [x] Replace the pre-schedule invitation image with the new uploaded artwork.
+- [x] Verify its complete, efficient mobile presentation.
+- [x] Audit visual cohesion and recommend focused improvements.

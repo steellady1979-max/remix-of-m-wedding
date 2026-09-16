@@ -4,6 +4,8 @@ React / TanStack Start invitation hosted on Vercel, with Supabase RSVP and wishe
 
 ## Database configuration
 
+The confirmed active project is `ydngzyifrabegebiwrpc`.
+
 Copy `.env.example` to `.env.local`. Set `VITE_SUPABASE_URL` and
 `VITE_SUPABASE_ANON_KEY` from the **same confirmed active project**. The key may
 be a public anon JWT or an `sb_publishable_` key. Never put a service-role or
@@ -24,7 +26,7 @@ Run `supabase/diagnose.sql` in the confirmed project's SQL editor. It only reads
 schema, constraints, policies and grants, without retrieving guest records.
 The current form contract expects:
 
-- `rsvps`: `id`, `created_at`, `guest_name`, `attending`, `plus_one`, `plus_one_name`.
+- `rsvps`: `id`, `created_at`, `name`, `attending`, `guests_count`, `plus_one`, `notes`.
 - `wishes`: `id`, `created_at`, `message`.
 
 A `42703` response means a requested column is absent. Confirm the project and
@@ -41,7 +43,7 @@ project explicitly only after confirming its project reference.
 ```sh
 npm install
 npm run dev
-node --test tests/supabase-config.test.mjs
+node --test tests/*.test.mjs
 npx tsc --noEmit
 npm run build
 ```

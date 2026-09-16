@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { weddingDatabase } from "@/lib/wedding-database";
-import { familyLabel } from "@/lib/rsvp-party";
+import { createRsvpRecord } from "@/lib/rsvp-party";
 import { AddToCalendar } from "@/components/AddToCalendar";
 const cake = { url: "/images/rsvp-cake.png" };
 
@@ -75,25 +75,18 @@ export function Rsvp() {
           setSaving(true);
           setError(null);
           
-          const { error: dbError } = await weddingDatabase.from("rsvps").insert({
-            guest_name: answer === "yes" ? name.trim() : "სამწუხაროდ ვერ",
-            attending: answer === "yes",
-            plus_one: answer === "yes" && (plusOne || family),
-            plus_one_name: answer === "yes"
-              ? family 
-                ? `ოჯახით — სულ ${familyCount} ადამიანი`
-                : plusOne 
-                  ? guestName.trim()
-                  : null
-              : null,
-          });
-
-          setSaving(false);
-          if (dbError) {
+          try {
+            const { error: dbError } = await weddingDatabase.from("rsvps").insert(
+              createRsvpRecord({ attending: answer === "yes", name, plusOne, family,
+                familyCount: Number(familyCount), guestName }),
+            );
+            if (dbError) throw dbError;
+            setSent(true);
+          } catch {
             setError("ვერ გაიგზავნა, სცადეთ ხელახლა");
-            return;
+          } finally {
+            setSaving(false);
           }
-          setSent(true);
         }}
       >
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

@@ -36,26 +36,29 @@ export type Database = {
         Row: {
           attending: boolean
           created_at: string
-          guest_name: string | null
+          name: string
+          guests_count: number
           id: string
           plus_one: boolean
-          plus_one_name: string | null
+          notes: string | null
         }
         Insert: {
           attending: boolean
           created_at?: string
-          guest_name?: string | null
+          name: string
+          guests_count?: number
           id?: string
           plus_one?: boolean
-          plus_one_name?: string | null
+          notes?: string | null
         }
         Update: {
           attending?: boolean
           created_at?: string
-          guest_name?: string | null
+          name?: string
+          guests_count?: number
           id?: string
           plus_one?: boolean
-          plus_one_name?: string | null
+          notes?: string | null
         }
         Relationships: []
       }

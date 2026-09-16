@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { weddingDatabase } from "@/lib/wedding-database";
-import { partySize, familySize } from "@/lib/rsvp-party";
+import { partySize } from "@/lib/rsvp-party";
 
 const ADMIN_PASSWORD = "GOGALIKA22";
 
@@ -137,7 +137,7 @@ function AdminPage() {
 
   const yes = rsvps.filter((r) => r.attending);
   const no = rsvps.filter((r) => !r.attending);
-  const guests = yes.reduce((n, r) => n + (Number(r.guests_count) || partySize(r) || 1), 0);
+  const guests = yes.reduce((n, r) => n + partySize(r), 0);
 
   return (
     <main className="min-h-screen bg-champagne px-5 py-14 font-sans text-ink sm:px-8">
@@ -191,9 +191,9 @@ function AdminPage() {
                   toCsv([
                     ["სახელი", "პასუხი", "რაოდენობა", "შენიშვნა", "თარიღი"],
                     ...rsvps.map((r) => [
-                      r.name ?? r.guest_name ?? "",
+                      r.name ?? "",
                       r.attending ? "მოდის" : "ვერ მოდის",
-                      String(r.guests_count ?? 1),
+                      String(partySize(r)),
                       r.notes ?? "",
                       fmt(r.created_at),
                     ]),
@@ -212,9 +212,9 @@ function AdminPage() {
             {rsvps.map((r) => (
               <li key={r.id} className="flex items-start justify-between gap-4 px-5 py-4">
                 <div>
-                  <p className="text-sm font-medium text-ink">{r.name || r.guest_name || "—"}</p>
+                  <p className="text-sm font-medium text-ink">{r.name || "—"}</p>
                   <p className="mt-1 text-sm text-ink/70">
-                    რაოდენობა: {r.guests_count || 1} {r.notes ? `| შენიშვნა: ${r.notes}` : ""}
+                    რაოდენობა: {partySize(r)} {r.notes ? `| შენიშვნა: ${r.notes}` : ""}
                   </p>
                   <p className="mt-1 text-sm text-ink/40">{fmt(r.created_at)}</p>
                 </div>

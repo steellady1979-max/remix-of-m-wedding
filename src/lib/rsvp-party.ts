@@ -1,21 +1,27 @@
-type PartyRow = { attending: boolean; plus_one: boolean; plus_one_name: string | null };
-
-// A readable marker fits the existing companion field and admin RPC, so one
-// household stays one RSVP without a schema migration or extra database writes.
-export function familyLabel(count: number) {
-  if (!Number.isSafeInteger(count) || count < 3 || count > 99) {
-    throw new Error("Invalid family size");
-  }
-  return `ოჯახით — სულ ${count} ადამიანი`;
-}
-
-export function familySize(row: PartyRow): number | null {
-  if (!row.attending || !row.plus_one) return null;
-  const match = /^ოჯახით — სულ ([1-9]\d?) ადამიანი$/.exec(row.plus_one_name ?? "");
-  const count = match ? Number(match[1]) : 0;
-  return count >= 3 && count <= 99 ? count : null;
-}
+type PartyRow = { attending: boolean; plus_one: boolean; guests_count: number | null };
 
 export function partySize(row: PartyRow): number {
-  return row.attending ? (familySize(row) ?? (row.plus_one ? 2 : 1)) : 0;
+  if (!row.attending) return 0;
+  return Number.isSafeInteger(row.guests_count) && row.guests_count! > 0
+    ? row.guests_count! : row.plus_one ? 2 : 1;
+}
+
+export function createRsvpRecord(input: {
+  attending: boolean; name: string; plusOne: boolean; family: boolean;
+  familyCount: number; guestName: string;
+}) {
+  const { attending, family, plusOne, familyCount } = input;
+  if (attending && input.name.trim().length < 2) throw new Error('Name required');
+  if (attending && family && (!Number.isSafeInteger(familyCount) || familyCount < 3 || familyCount > 99)) {
+    throw new Error('Invalid family size');
+  }
+  if (attending && !family && plusOne && input.guestName.trim().length < 2) throw new Error('Companion name required');
+  return {
+    name: attending ? input.name.trim() : 'სამწუხაროდ ვერ',
+    attending,
+    guests_count: attending ? (family ? familyCount : plusOne ? 2 : 1) : 0,
+    plus_one: attending && (plusOne || family),
+    notes: !attending ? null : family ? `ოჯახით — სულ ${familyCount} ადამიანი`
+      : plusOne ? input.guestName.trim() : null,
+  };
 }

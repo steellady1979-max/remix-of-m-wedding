@@ -1,1 +1,2 @@
-project_id = "wimeacwdjbdxizpnfhlm"
+# Local CLI identifier only. Link remote projects explicitly with supabase link.
+project_id = "wedding-invitation"

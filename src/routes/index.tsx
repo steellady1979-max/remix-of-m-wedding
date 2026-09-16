@@ -14,6 +14,7 @@ const ceremony = { url: "/images/ceremony.jpg" };
 const dinner = { url: "/images/dinner-table.webp" };
 const cakeCutting = { url: "/images/cake-cutting-couple.png" };
 const invitation = { url: "/images/countdown-invitation.webp" };
+const dressCode = { url: "/images/dresscode-guests.webp" };
 
 const TITLE = "გოგა & ლიკა — 22 სექტემბერი 2026";
 const DESCRIPTION =
@@ -213,7 +214,7 @@ function Index() {
                       height={item.height}
                       className={
                         item.image === cakeCutting.url
-                          ? "mx-auto aspect-square w-full max-w-[19rem] object-cover"
+                           ? "mx-auto h-auto w-full max-w-[15rem] object-contain sm:max-w-[17rem]"
                           : "photo-frame"
                       }
                     />
@@ -237,22 +238,28 @@ function Index() {
 
 
         {/* Dress code */}
-        <section className="paper bg-white px-6 py-24 text-center lg:py-32">
-          <div className="mx-auto w-full max-w-xl">
-            <Reveal className="flex flex-col items-center">
+        <section className="paper bg-white px-5 py-20 text-center sm:px-6 sm:py-24 lg:py-32">
+          <div className="mx-auto grid w-full max-w-5xl items-center gap-10 md:grid-cols-2 md:gap-14 lg:gap-20">
+            <Reveal className="w-full">
+              <img
+                src={dressCode.url}
+                alt="სადღესასწაულო სამოსში გამოწყობილი სტუმრების აკვარელის ესკიზი"
+                loading="lazy"
+                decoding="async"
+                width={1024}
+                height={673}
+                className="photo-frame mx-auto h-auto w-full object-contain"
+              />
+            </Reveal>
+            <Reveal delay={120} className="flex flex-col items-center md:items-start md:text-left">
               <h2 className="font-display text-3xl font-light text-olive sm:text-4xl lg:text-5xl">
                 დრესკოდი
               </h2>
-              <p className="mt-6 max-w-sm text-base leading-8 text-ink/75 lg:text-lg">
-                პასტელური ფერები, თეთრი ფერი დავუთმოთ პატარძალს
+              <p className="mt-6 max-w-xl text-[0.95rem] leading-8 text-ink/75 sm:text-base lg:text-lg lg:leading-9">
+                განსაკუთრებული შეზღუდვა ფერებთან დაკავშირებით არ არის — შეგიძლიათ მოირგოთ
+                თქვენთვის სასურველი და კომფორტული სამოსი, რომელიც ზოგად სადღესასწაულო
+                ატმოსფეროს მოუხდება. თეთრი ფერი დავუტოვოთ პატარძალს ✨
               </p>
-              <div className="mt-8 flex items-center justify-center gap-3" aria-label="პასტელური ფერების არჩევანი">
-                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-sage" />
-                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-rose" />
-                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-blue" />
-                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-lilac" />
-                <span className="h-9 w-9 rounded-full border border-olive/10 bg-pastel-yellow" />
-              </div>
             </Reveal>
           </div>
         </section>

@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Replace the image below the countdown with the uploaded invitation artwork.
-- [ ] Remove the dress-code illustration and center its remaining content.
-- [ ] Remove the photograph section after RSVP.
+- [x] Add the uploaded dress-code artwork without cropping.
+- [x] Replace the dress-code copy and remove the conflicting color swatches.
 - [ ] Verify mobile and desktop presentation.
+- [ ] Deploy the completed update.

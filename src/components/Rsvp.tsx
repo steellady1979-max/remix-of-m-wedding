@@ -76,23 +76,16 @@ export function Rsvp() {
           setError(null);
           
           const { error: dbError } = await weddingDatabase.from("rsvps").insert({
-            name: answer === "yes" ? name.trim() : "სამწუხაროდ ვერ",
+            guest_name: answer === "yes" ? name.trim() : "სამწუხაროდ ვერ",
             attending: answer === "yes",
-            guests_count: answer === "yes" 
-              ? family 
-                ? Number(familyCount) 
-                : plusOne 
-                  ? 2 
-                  : 1 
-              : 1,
             plus_one: answer === "yes" && (plusOne || family),
-            notes: answer === "yes" 
+            plus_one_name: answer === "yes"
               ? family 
-                ? `ოჯახით: ${familyCount} წევრი` 
+                ? `ოჯახით — სულ ${familyCount} ადამიანი`
                 : plusOne 
-                  ? `თანმხლები: ${guestName.trim()}` 
-                  : "მარტომ"
-              : "ვერ ახერხებს მოსვლას",
+                  ? guestName.trim()
+                  : null
+              : null,
           });
 
           setSaving(false);

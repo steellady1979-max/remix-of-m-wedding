@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Replace the image below the countdown with the uploaded invitation artwork.
-- [ ] Remove the dress-code illustration and center its remaining content.
-- [ ] Remove the photograph section after RSVP.
-- [ ] Verify mobile and desktop presentation.
+- [x] Add the uploaded dress-code artwork without cropping.
+- [x] Replace the dress-code copy and remove the conflicting color swatches.
+- [x] Verify mobile and desktop presentation.
+- [ ] Deploy permanently to Vercel — blocked until the temporary deployment is claimed in the owner's Vercel account.
